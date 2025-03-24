@@ -8,7 +8,17 @@
     <artifactId>chemical-data-java</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+
+
     <description>化学文献多模态信息抽取平台Java侧服务端</description>
+
+    <modules>
+        <module>dependencies</module>
+        <module>service</module>
+        <module>module</module>
+    </modules>
+
     <developers>
         <developer>
             <name>Ice, Song</name>
@@ -16,16 +26,48 @@
             <organization>华东理工大学</organization>
         </developer>
     </developers>
-    <modules>
-        <module>dependencies</module>
-        <module>service</module>
-        <module>module</module>
-    </modules>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.verison>17</java.verison>
     </properties>
+
+
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+
+
+
+
+
+
+
+
+    </dependencies>
+
+    <!-- 依赖通过单独的pom进行管理 -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.songshilong</groupId>
+                <artifactId>dependencies</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
 
 </project>

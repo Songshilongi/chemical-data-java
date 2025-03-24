@@ -10,11 +10,15 @@
     </parent>
 
     <artifactId>service</artifactId>
+    <packaging>pom</packaging>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <modules>
+        <module>gateway-service</module>
+        <module>user-service</module>
+    </modules>
+
+
+
+
 
 </project>

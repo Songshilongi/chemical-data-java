@@ -1,0 +1,21 @@
+server:
+  port: 9001
+
+
+spring:
+  config:
+    import: nacos:property
+  profiles:
+    active: dev
+  application:
+    name: user-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.1.110:8848
+        namespace: ddc57837-c29e-4e51-846d-1feb554be9d0
+      config:
+        server-addr: 192.168.1.110:8848
+        namespace: ddc57837-c29e-4e51-846d-1feb554be9d0
+        file-extension: yaml
+        group: DEFAULT_GROUP
