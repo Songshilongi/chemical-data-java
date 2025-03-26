@@ -19,18 +19,11 @@ public class NacosTest {
     @Value("${user.name}")
     private String name;
 
-    @Autowired
-    private UserInfoService userInfoService;
 
 
     @Test
     public void test(){
         System.out.println(name);
-    }
-
-    @Test
-    public void test2(){
-        userInfoService.hello();
     }
 
 }
