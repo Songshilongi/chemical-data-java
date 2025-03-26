@@ -4,6 +4,8 @@ import com.songshilong.module.starter.common.result.Result;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
 import com.songshilong.service.user.service.impl.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,12 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "用户相关接口")
 public class UserController {
 
     private final UserService userService;
 
 
     @PostMapping("/register")
+    @ApiOperation(value = "用户注册")
     public Result<UserRegisterResponse> register(@RequestBody @Validated UserRegisterRequest userRegisterRequest) {
         UserRegisterResponse userRegisterResponse = userService.register(userRegisterRequest);
         return Result.success(userRegisterResponse);

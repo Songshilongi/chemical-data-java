@@ -16,6 +16,7 @@
     <modules>
         <module>starter-common</module>
         <module>starter-database</module>
+        <module>starter-web</module>
     </modules>
 
 
