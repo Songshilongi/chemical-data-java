@@ -5,6 +5,7 @@ import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
 import com.songshilong.service.user.service.impl.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,8 +26,9 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public Result<UserRegisterResponse> register(@RequestBody UserRegisterRequest userRegisterRequest) {
-        return Result.success(null);
+    public Result<UserRegisterResponse> register(@RequestBody @Validated UserRegisterRequest userRegisterRequest) {
+        UserRegisterResponse userRegisterResponse = userService.register(userRegisterRequest);
+        return Result.success(userRegisterResponse);
     }
 
 

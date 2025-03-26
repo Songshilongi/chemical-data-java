@@ -1,5 +1,7 @@
 package com.songshilong.service.user.service.impl;
 
+import com.songshilong.service.user.dto.request.UserRegisterRequest;
+import com.songshilong.service.user.dto.response.UserRegisterResponse;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,4 +14,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl implements UserService{
+    @Override
+    public UserRegisterResponse register(UserRegisterRequest userRegisterRequest) {
+        return null;
+    }
 }

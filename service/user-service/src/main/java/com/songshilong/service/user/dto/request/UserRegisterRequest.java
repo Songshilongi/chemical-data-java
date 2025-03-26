@@ -1,5 +1,7 @@
 package com.songshilong.service.user.dto.request;
 
+import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -12,4 +14,25 @@ import lombok.Data;
  */
 @Data
 public class UserRegisterRequest {
+
+
+    /**
+     * 用户名/用户昵称
+     */
+    private String username;
+    /**
+     * 用户密码
+     */
+    private String password;
+
+    /**
+     * 用户邮箱
+     */
+    private String email;
+
+    /**
+     * 用户手机号
+     */
+    private String phone;
+
 }
