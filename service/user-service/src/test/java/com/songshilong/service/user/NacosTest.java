@@ -1,6 +1,8 @@
 package com.songshilong.service.user;
 
+import com.songshilong.service.user.service.UserInfoService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,11 +19,19 @@ public class NacosTest {
 
     @Value("${user.name}")
     private String name;
+
+    @Autowired
+    private UserInfoService userInfoService;
     
     
     @Test
     public void test(){
         System.out.println(name);
+    }
+
+    @Test
+    public void test2(){
+        userInfoService.hello();
     }
 
 }

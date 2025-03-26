@@ -14,12 +14,12 @@
     <artifactId>user-service</artifactId>
 
     <dependencies>
-
+        <!--  Web      -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -38,6 +38,19 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
         </dependency>
+
+        <!--Database starter-->
+        <dependency>
+            <groupId>com.songshilong</groupId>
+            <artifactId>starter-database</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+
+
+
+
+
     </dependencies>
 
 
