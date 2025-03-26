@@ -3,6 +3,8 @@ package com.songshilong.service.user.controller;
 import com.songshilong.module.starter.common.result.Result;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
+import com.songshilong.service.user.service.impl.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version: 1.0
  */
 @RestController
-public class UserRegisterController {
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
 
 
     @PostMapping("/register")

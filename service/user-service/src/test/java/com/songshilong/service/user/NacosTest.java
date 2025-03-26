@@ -1,6 +1,5 @@
 package com.songshilong.service.user;
 
-import com.songshilong.service.user.service.UserInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +21,8 @@ public class NacosTest {
 
     @Autowired
     private UserInfoService userInfoService;
-    
-    
+
+
     @Test
     public void test(){
         System.out.println(name);
