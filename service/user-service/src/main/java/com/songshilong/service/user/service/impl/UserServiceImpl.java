@@ -3,6 +3,7 @@ package com.songshilong.service.user.service.impl;
 import com.songshilong.module.starter.common.enums.UserExceptionEnum;
 import com.songshilong.module.starter.common.exception.BusinessException;
 import com.songshilong.module.starter.common.utils.BeanUtil;
+import com.songshilong.module.starter.common.utils.Md5SecurityUtil;
 import com.songshilong.service.user.dao.entity.UserInfoEntity;
 import com.songshilong.service.user.dao.mapper.UserInfoMapper;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
@@ -36,6 +37,10 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         UserInfoEntity userInfoEntity = BeanUtil.convert(userRegisterRequest, UserInfoEntity.class);
+        if (Objects.isNull(userInfoEntity)) {
+            throw new BusinessException(UserExceptionEnum.USER_REGISTER_FAIL);
+        }
+        userInfoEntity.setPassword(Md5SecurityUtil.getMd5ValueWithSalt(userInfoEntity.getPassword()));
         try {
             int insert = userInfoMapper.insert(userInfoEntity);
             if (insert != 1) {

@@ -1,5 +1,6 @@
 package com.songshilong.module.starter.common.exception;
 
+import com.songshilong.module.starter.common.enums.ExceptionHandler;
 import com.songshilong.module.starter.common.enums.UserExceptionEnum;
 
 /**
@@ -36,8 +37,8 @@ public class ClientException extends AbstractException {
         this(null, null, errorCode, errorMsg);
     }
 
-    public ClientException(UserExceptionEnum userExceptionEnum) {
-        this(userExceptionEnum.errorCode(), userExceptionEnum.errorMsg());
+    public ClientException(ExceptionHandler handler) {
+        this(handler.errorCode(), handler.errorMsg());
     }
 
 }

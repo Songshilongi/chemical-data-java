@@ -18,4 +18,11 @@ public class AbstractException extends RuntimeException{
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
     }
+
+    public Integer errorCode() {
+        return this.errorCode;
+    }
+    public String errorMsg() {
+        return this.errorMsg;
+    }
 }

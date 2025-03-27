@@ -1,6 +1,7 @@
 package com.songshilong.service.user;
 
 import com.songshilong.module.starter.common.utils.BeanUtil;
+import com.songshilong.module.starter.common.utils.Md5SecurityUtil;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
 import org.junit.jupiter.api.Test;
@@ -40,5 +41,13 @@ public class NacosTest {
         System.out.println(result);
 
     }
+
+    @Test
+    public void testMd5() {
+        String password = "20010503sslS";
+        System.out.println(Md5SecurityUtil.getMd5Value(password));
+        System.out.println(Md5SecurityUtil.getMd5ValueWithSalt(password));
+    }
+
 
 }
