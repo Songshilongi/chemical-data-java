@@ -60,5 +60,18 @@ public class NacosTest {
         redisUtil.get("test", String.class);
     }
 
+    @Test
+    public void TestJSON() {
+        UserRegisterRequest userRegisterRequest = new UserRegisterRequest();
+        userRegisterRequest.setUsername("songshilong");
+        userRegisterRequest.setPassword("123456");
+        userRegisterRequest.setEmail("songshilong@163.com");
+        userRegisterRequest.setPhone("12345678901");
+        String json = BeanUtil.toJSON(userRegisterRequest);
+        System.out.println(json);
+        UserRegisterRequest result = BeanUtil.toObject(json, UserRegisterRequest.class);
+        System.out.println(result);
+    }
+
 
 }
