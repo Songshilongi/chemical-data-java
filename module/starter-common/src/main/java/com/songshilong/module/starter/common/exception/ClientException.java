@@ -5,12 +5,13 @@ import com.songshilong.module.starter.common.enums.UserExceptionEnum;
 /**
  * @BelongsProject: chemical-data-java
  * @BelongsPackage: com.songshilong.module.starter.common.exception
- * @Author: Shilong Song
- * @CreateTime: 2025-03-26  21:46
- * @Description: BusinessException-业务异常
+ * @Author: Ice, Song
+ * @CreateTime: 2025-03-27  14:28
+ * @Description: ClientException
  * @Version: 1.0
  */
-public class BusinessException extends AbstractException {
+public class ClientException extends AbstractException {
+
     /**
      * Constructor
      *
@@ -19,24 +20,23 @@ public class BusinessException extends AbstractException {
      * @param errorCode 错误码
      * @param errorMsg  错误信息
      */
-    public BusinessException(String message, Throwable cause, Integer errorCode, String errorMsg) {
+    public ClientException(String message, Throwable cause, Integer errorCode, String errorMsg) {
         super(message, cause, errorCode, errorMsg);
     }
 
-    public BusinessException(String message, Integer errorCode, String errorMsg) {
+    public ClientException(String message, Integer errorCode, String errorMsg) {
         this(message, null, errorCode, errorMsg);
     }
 
-    public BusinessException(String message, Integer errorCode) {
+    public ClientException(String message, Integer errorCode) {
         this(message, null, errorCode, null);
     }
 
-    public BusinessException(Integer errorCode, String errorMsg) {
+    public ClientException(Integer errorCode, String errorMsg) {
         this(null, null, errorCode, errorMsg);
     }
 
-
-    public BusinessException(UserExceptionEnum userExceptionEnum) {
+    public ClientException(UserExceptionEnum userExceptionEnum) {
         this(userExceptionEnum.errorCode(), userExceptionEnum.errorMsg());
     }
 

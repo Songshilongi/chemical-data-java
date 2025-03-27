@@ -1,9 +1,19 @@
 package com.songshilong.service.user.service.impl;
 
+import com.songshilong.module.starter.common.enums.UserExceptionEnum;
+import com.songshilong.module.starter.common.exception.BusinessException;
+import com.songshilong.module.starter.common.utils.BeanUtil;
+import com.songshilong.service.user.dao.entity.UserInfoEntity;
+import com.songshilong.service.user.dao.mapper.UserInfoMapper;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
 import com.songshilong.service.user.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -14,9 +24,26 @@ import org.springframework.stereotype.Service;
  * @Version: 1.0
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
+    private final UserInfoMapper userInfoMapper;
+
+
     @Override
     public UserRegisterResponse register(UserRegisterRequest userRegisterRequest) {
-        return null;
+        if (Objects.isNull(userRegisterRequest)) {
+            return null;
+        }
+        UserInfoEntity userInfoEntity = BeanUtil.convert(userRegisterRequest, UserInfoEntity.class);
+        try {
+            int insert = userInfoMapper.insert(userInfoEntity);
+            if (insert != 1) {
+                throw new BusinessException(UserExceptionEnum.USER_REGISTER_FAIL);
+            }
+        } catch (DuplicateKeyException exception) {
+            throw new BusinessException(UserExceptionEnum.USER_EXIST);
+        }
+        return BeanUtil.convert(userRegisterRequest, UserRegisterResponse.class);
     }
 }
