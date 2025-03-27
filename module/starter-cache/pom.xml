@@ -5,20 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.songshilong</groupId>
-        <artifactId>chemical-data-java</artifactId>
+        <artifactId>module</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>module</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>starter-cache</artifactId>
 
-
-    <modules>
-        <module>starter-common</module>
-        <module>starter-database</module>
-        <module>starter-web</module>
-        <module>starter-cache</module>
-    </modules>
 
 
 </project>
