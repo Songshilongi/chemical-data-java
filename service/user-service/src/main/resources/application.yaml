@@ -4,6 +4,7 @@ server:
     context-path: /api/user-service
 
 
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,6 +28,10 @@ spring:
         namespace: ddc57837-c29e-4e51-846d-1feb554be9d0
         file-extension: yaml
         group: DEFAULT_GROUP
+  data:
+    redis:
+      host: 192.168.1.110
+      port: 6379
 
 
 mybatis-plus:

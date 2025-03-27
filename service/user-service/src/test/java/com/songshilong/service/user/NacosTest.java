@@ -4,10 +4,12 @@ import com.songshilong.module.starter.common.utils.BeanUtil;
 import com.songshilong.module.starter.common.utils.Md5SecurityUtil;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
+import com.songshilong.starter.cache.core.RedisUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -22,6 +24,9 @@ public class NacosTest {
 
     @Value("${user.name}")
     private String name;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
 
 
@@ -47,6 +52,12 @@ public class NacosTest {
         String password = "20010503sslS";
         System.out.println(Md5SecurityUtil.getMd5Value(password));
         System.out.println(Md5SecurityUtil.getMd5ValueWithSalt(password));
+    }
+
+
+    @Test
+    public void RedisTest() {
+        redisUtil.get("test", String.class);
     }
 
 
