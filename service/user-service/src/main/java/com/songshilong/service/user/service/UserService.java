@@ -1,4 +1,4 @@
-package com.songshilong.service.user.service.impl;
+package com.songshilong.service.user.service;
 
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;

@@ -3,7 +3,7 @@ package com.songshilong.service.user.controller;
 import com.songshilong.module.starter.common.result.Result;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
-import com.songshilong.service.user.service.impl.UserService;
+import com.songshilong.service.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
