@@ -1,12 +1,15 @@
 package com.songshilong.service.user.controller;
 
 import com.songshilong.module.starter.common.result.Result;
+import com.songshilong.service.user.dto.request.UserLoginRequest;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
+import com.songshilong.service.user.dto.response.UserLoginResponse;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
 import com.songshilong.service.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Validate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +36,13 @@ public class UserController {
     public Result<UserRegisterResponse> register(@RequestBody @Validated UserRegisterRequest userRegisterRequest) {
         UserRegisterResponse userRegisterResponse = userService.register(userRegisterRequest);
         return Result.success(userRegisterResponse);
+    }
+
+    @PostMapping("/login")
+    @ApiOperation(value = "用户登录")
+    public Result<UserLoginResponse> login(@RequestBody @Validated UserLoginRequest userLoginRequest) {
+        UserLoginResponse userLoginResponse = userService.login(userLoginRequest);
+        return Result.success(userLoginResponse);
     }
 
 

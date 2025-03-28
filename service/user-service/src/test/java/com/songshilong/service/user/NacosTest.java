@@ -1,5 +1,6 @@
 package com.songshilong.service.user;
 
+import com.songshilong.module.starter.common.properties.UserJwtProperty;
 import com.songshilong.module.starter.common.utils.BeanUtil;
 import com.songshilong.module.starter.common.utils.Md5SecurityUtil;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
@@ -28,6 +29,8 @@ public class NacosTest {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Autowired
+    private UserJwtProperty userJwtProperty;
 
 
     @Test
@@ -71,6 +74,11 @@ public class NacosTest {
         System.out.println(json);
         UserRegisterRequest result = BeanUtil.toObject(json, UserRegisterRequest.class);
         System.out.println(result);
+    }
+
+    @Test
+    public void testProperty() {
+        System.out.println(userJwtProperty);
     }
 
 

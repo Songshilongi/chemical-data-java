@@ -1,19 +1,30 @@
 package com.songshilong.service.user.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.songshilong.module.starter.common.constant.Constant;
 import com.songshilong.module.starter.common.enums.UserExceptionEnum;
 import com.songshilong.module.starter.common.exception.BusinessException;
+import com.songshilong.module.starter.common.properties.UserJwtProperty;
 import com.songshilong.module.starter.common.utils.BeanUtil;
+import com.songshilong.module.starter.common.utils.JwtUtil;
 import com.songshilong.module.starter.common.utils.Md5SecurityUtil;
 import com.songshilong.service.user.dao.entity.UserInfoEntity;
 import com.songshilong.service.user.dao.mapper.UserInfoMapper;
+import com.songshilong.service.user.dto.request.UserLoginRequest;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
+import com.songshilong.service.user.dto.response.UserLoginResponse;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
 import com.songshilong.service.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -28,6 +39,11 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
 
     private final UserInfoMapper userInfoMapper;
+    private final UserJwtProperty userJwtProperty;
+
+    private static final int LOGIN_TYPE_PASSWORD = 1;
+    private static final int LOGIN_TYPE_EMAIL = 2;
+    private static final int LOGIN_TYPE_PHONE = 3;
 
 
     @Override
@@ -49,5 +65,78 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(UserExceptionEnum.USER_EXIST);
         }
         return BeanUtil.convert(userRegisterRequest, UserRegisterResponse.class);
+    }
+
+    @Override
+    public UserLoginResponse login(UserLoginRequest userLoginRequest) {
+        Integer loginType = userLoginRequest.getLoginType();
+        UserLoginResponse userLoginResponse = null;
+        switch (loginType) {
+            case LOGIN_TYPE_PASSWORD:
+                userLoginResponse = this.userPasswordLogin(userLoginRequest);
+                break;
+            case LOGIN_TYPE_EMAIL:
+                userLoginResponse = this.userEmailLogin(userLoginRequest);
+                break;
+            case LOGIN_TYPE_PHONE:
+                userLoginResponse = this.userPhoneLogin(userLoginRequest);
+                break;
+            default:
+                throw new BusinessException(UserExceptionEnum.USER_LOGIN_FAIL_UNKNOWN_TYPE);
+        }
+        return userLoginResponse;
+    }
+
+    /**
+     * 手机号验证码登录
+     *
+     * @param userLoginRequest {@link UserLoginRequest}
+     * @return {@link UserLoginResponse}
+     */
+    private UserLoginResponse userPhoneLogin(UserLoginRequest userLoginRequest) {
+        return null;
+    }
+
+    /**
+     * 邮箱验证码登录
+     *
+     * @param userLoginRequest {@link UserLoginRequest}
+     * @return {@link UserLoginResponse}
+     */
+    private UserLoginResponse userEmailLogin(UserLoginRequest userLoginRequest) {
+        return null;
+    }
+
+    /**
+     * 密码匹配登录
+     *
+     * @param userLoginRequest {@link UserLoginRequest}
+     * @return {@link UserLoginResponse}
+     */
+    private UserLoginResponse userPasswordLogin(UserLoginRequest userLoginRequest) {
+        String password = userLoginRequest.getPassword();
+        String username = userLoginRequest.getUsername();
+        if (StrUtil.isBlank(password) || StrUtil.isBlank(username)) {
+            throw new BusinessException(UserExceptionEnum.USER_LOGIN_FAIL_NONE_PASSWORD);
+        }
+        //TODO 用户名需要唯一，因为支持使用用户名登录
+        String md5Password = Md5SecurityUtil.getMd5Value(password);
+        LambdaQueryWrapper<UserInfoEntity> queryWrapper = Wrappers.lambdaQuery(UserInfoEntity.class)
+                .eq(UserInfoEntity::getUsername, username)
+                .eq(UserInfoEntity::getPassword, md5Password);
+        UserLoginResponse userLoginResponse = Optional.ofNullable(this.userInfoMapper.selectOne(queryWrapper))
+                .map(item -> BeanUtil.convert(item, UserLoginResponse.class))
+                .orElseThrow(() -> new BusinessException(UserExceptionEnum.USER_LOGIN_FAIL));
+
+        userLoginResponse.setToken(this.getUserToken(userLoginResponse));
+        return userLoginResponse;
+    }
+
+    private String getUserToken(UserLoginResponse userLoginResponse) {
+        Map<String, String> claims = new HashMap<>();
+        claims.put(Constant.USERNAME, userLoginResponse.getUsername());
+        claims.put(Constant.EMAIL, userLoginResponse.getEmail());
+        claims.put(Constant.PHONE, userLoginResponse.getPhone());
+        return JwtUtil.generateToken(userJwtProperty.getSecretKey(), userJwtProperty.getTtlMillis(), claims);
     }
 }

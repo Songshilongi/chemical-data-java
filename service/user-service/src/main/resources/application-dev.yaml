@@ -1,0 +1,6 @@
+chemical:
+  property:
+    jwt:
+      user:
+        secret-key: "grdgdr343gdsawaesg45th"
+        ttl-millis: 7200000

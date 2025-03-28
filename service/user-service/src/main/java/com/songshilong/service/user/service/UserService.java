@@ -1,6 +1,8 @@
 package com.songshilong.service.user.service;
 
+import com.songshilong.service.user.dto.request.UserLoginRequest;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
+import com.songshilong.service.user.dto.response.UserLoginResponse;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
 
 /**
@@ -19,4 +21,11 @@ public interface UserService {
      * @return {@link UserRegisterResponse} 注册结果
      */
     UserRegisterResponse register(UserRegisterRequest userRegisterRequest);
+
+    /**
+     * 登录
+     * @param userLoginRequest {@link UserLoginRequest} user login request param
+     * @return {@link UserLoginResponse} login response
+     */
+    UserLoginResponse login(UserLoginRequest userLoginRequest);
 }

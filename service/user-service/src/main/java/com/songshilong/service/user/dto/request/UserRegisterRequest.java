@@ -2,7 +2,10 @@ package com.songshilong.service.user.dto.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 /**
@@ -36,6 +39,7 @@ public class UserRegisterRequest {
 
 
     @ApiModelProperty("用户手机号")
+    @NotNull
     private String phone;
 
 }
