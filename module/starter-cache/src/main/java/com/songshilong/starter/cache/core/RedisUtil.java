@@ -1,10 +1,8 @@
 package com.songshilong.starter.cache.core;
 
 import com.songshilong.module.starter.common.utils.BeanUtil;
-import jdk.jpackage.internal.Log;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
