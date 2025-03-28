@@ -1,5 +1,8 @@
 package com.songshilong.service.gateway;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /**
  * @BelongsProject: chemical-data-java
  * @BelongsPackage: com.songshilong.service.gateway
@@ -8,6 +11,9 @@ package com.songshilong.service.gateway;
  * @Description: GatewayServiceApplication
  * @Version: 1.0
  */
-
+@SpringBootApplication
 public class GatewayServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayServiceApplication.class, args);
+    }
 }
