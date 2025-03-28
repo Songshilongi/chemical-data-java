@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(userInfoEntity)) {
             throw new BusinessException(UserExceptionEnum.USER_REGISTER_FAIL);
         }
-        userInfoEntity.setPassword(Md5SecurityUtil.getMd5ValueWithSalt(userInfoEntity.getPassword()));
+        userInfoEntity.setPassword(Md5SecurityUtil.getMd5Value(userInfoEntity.getPassword()));
         try {
             int insert = userInfoMapper.insert(userInfoEntity);
             if (insert != 1) {

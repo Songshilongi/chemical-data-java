@@ -1,8 +1,12 @@
 package com.songshilong.starter.cache.core;
 
+import com.songshilong.module.starter.common.utils.BeanUtil;
+import jdk.jpackage.internal.Log;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -19,7 +23,17 @@ public class RedisUtil implements Cache{
 
     @Override
     public <T> T get(String key, Class<T> clazz) {
-        redisTemplate.opsForValue().set(key, "value");
-        return null;
+        String value = redisTemplate.opsForValue().get(key);
+        return BeanUtil.toObject(value, clazz);
+    }
+
+
+    @Override
+    public void set(String key, String value) {
+        redisTemplate.opsForValue().set(key, value);
+    }
+
+    public void set(String key, String value, long timeout, TimeUnit timeUnit) {
+        redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 }
