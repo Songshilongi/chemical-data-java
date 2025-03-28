@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @Version: 1.0
  */
 @RequiredArgsConstructor
-public class RedisUtil implements Cache{
+public class RedisUtil implements Cache {
 
     private final StringRedisTemplate redisTemplate;
 
@@ -33,5 +33,16 @@ public class RedisUtil implements Cache{
 
     public void set(String key, String value, long timeout, TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
+    }
+
+
+    @Override
+    public void setAdd(String key, String... value) {
+        redisTemplate.opsForSet().add(key, value);
+    }
+
+    @Override
+    public Boolean setIsMember(String key, Object obj) {
+        return redisTemplate.opsForSet().isMember(key, obj);
     }
 }

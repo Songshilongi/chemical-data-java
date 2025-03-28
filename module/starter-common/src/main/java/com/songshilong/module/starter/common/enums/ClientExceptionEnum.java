@@ -10,7 +10,8 @@ package com.songshilong.module.starter.common.enums;
  */
 public enum ClientExceptionEnum implements ExceptionHandler {
     JSON_SERIALIZE_FAIL(20001, "JSON序列化失败"),
-    JSON_DESERIALIZE_FAIL(20002, "JSON反序列化失败");
+    JSON_DESERIALIZE_FAIL(20002, "JSON反序列化失败"),
+    REGISTER_GET_LOCK_FAIL(20003, "用户注册时尝试获取用户名锁失败");
 
 
     private final Integer errorCode;

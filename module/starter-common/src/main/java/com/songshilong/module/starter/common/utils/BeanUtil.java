@@ -51,9 +51,6 @@ public class BeanUtil {
      * @return 拷贝结果
      */
     public static <S, T> T convert(S source, Class<T> target) {
-        if (Objects.isNull(source)) {
-            return null;
-        }
         T targetInstance = null;
         try {
             targetInstance = target.newInstance();

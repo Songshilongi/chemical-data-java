@@ -18,7 +18,8 @@ import lombok.Data;
 @ApiModel("用户登录响应")
 public class UserLoginResponse {
 
-
+    @ApiModelProperty("用户ID")
+    private Long userId;
 
     @ApiModelProperty("用户名/用户昵称")
     private String username;

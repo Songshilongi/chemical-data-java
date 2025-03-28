@@ -1,8 +1,7 @@
-package com.songshilong.module.starter.common.properties;
+package com.songshilong.service.user.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * @BelongsProject: chemical-data-java

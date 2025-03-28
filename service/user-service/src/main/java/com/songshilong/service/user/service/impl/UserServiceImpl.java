@@ -4,9 +4,11 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.songshilong.module.starter.common.constant.Constant;
+import com.songshilong.module.starter.common.constant.RedisKeyConstant;
+import com.songshilong.module.starter.common.enums.ClientExceptionEnum;
 import com.songshilong.module.starter.common.enums.UserExceptionEnum;
 import com.songshilong.module.starter.common.exception.BusinessException;
-import com.songshilong.module.starter.common.properties.UserJwtProperty;
+import com.songshilong.module.starter.common.exception.ClientException;
 import com.songshilong.module.starter.common.utils.BeanUtil;
 import com.songshilong.module.starter.common.utils.JwtUtil;
 import com.songshilong.module.starter.common.utils.Md5SecurityUtil;
@@ -16,8 +18,14 @@ import com.songshilong.service.user.dto.request.UserLoginRequest;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.UserLoginResponse;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
+import com.songshilong.service.user.properties.UserJwtProperty;
 import com.songshilong.service.user.service.UserService;
+import com.songshilong.service.user.util.UserUtil;
+import com.songshilong.starter.cache.core.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RBloomFilter;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
@@ -40,29 +48,54 @@ public class UserServiceImpl implements UserService {
 
     private final UserInfoMapper userInfoMapper;
     private final UserJwtProperty userJwtProperty;
+    private final RedissonClient redissonClient;
+    private final RBloomFilter<String> usernameBloomFilter;
+    private final RedisUtil redisUtil;
 
     private static final int LOGIN_TYPE_PASSWORD = 1;
     private static final int LOGIN_TYPE_EMAIL = 2;
     private static final int LOGIN_TYPE_PHONE = 3;
 
+    @Override
+    public Boolean hasUsername(String username) {
+        boolean contains = usernameBloomFilter.contains(username);
+        if (contains) {
+            return redisUtil.setIsMember(RedisKeyConstant.USER_REGISTER_USERNAME + UserUtil.hashShardingIndex(username), username);
+        }
+        return Boolean.FALSE;
+    }
 
     @Override
     public UserRegisterResponse register(UserRegisterRequest userRegisterRequest) {
         if (Objects.isNull(userRegisterRequest)) {
             return null;
         }
-        UserInfoEntity userInfoEntity = BeanUtil.convert(userRegisterRequest, UserInfoEntity.class);
-        if (Objects.isNull(userInfoEntity)) {
-            throw new BusinessException(UserExceptionEnum.USER_REGISTER_FAIL);
+        String username = userRegisterRequest.getUsername();
+        if (this.hasUsername(username)) {
+            throw new BusinessException(UserExceptionEnum.USER_EXIST);
         }
-        userInfoEntity.setPassword(Md5SecurityUtil.getMd5Value(userInfoEntity.getPassword()));
+
+        RLock lock = redissonClient.getLock(RedisKeyConstant.USER_REGISTER_USERNAME_LOCK_PREFIX + username);
+        if (!lock.tryLock()) {
+            throw new ClientException(ClientExceptionEnum.REGISTER_GET_LOCK_FAIL);
+        }
         try {
-            int insert = userInfoMapper.insert(userInfoEntity);
-            if (insert != 1) {
+            UserInfoEntity userInfoEntity = BeanUtil.convert(userRegisterRequest, UserInfoEntity.class);
+            if (Objects.isNull(userInfoEntity)) {
                 throw new BusinessException(UserExceptionEnum.USER_REGISTER_FAIL);
             }
-        } catch (DuplicateKeyException exception) {
-            throw new BusinessException(UserExceptionEnum.USER_EXIST);
+            userInfoEntity.setPassword(Md5SecurityUtil.getMd5Value(userInfoEntity.getPassword()));
+            try {
+                int insert = userInfoMapper.insert(userInfoEntity);
+                if (insert != 1) {
+                    throw new BusinessException(UserExceptionEnum.USER_REGISTER_FAIL);
+                }
+            } catch (DuplicateKeyException exception) {
+                throw new BusinessException(UserExceptionEnum.USER_EXIST);
+            }
+            redisUtil.setAdd(RedisKeyConstant.USER_REGISTER_USERNAME + UserUtil.hashShardingIndex(username), username);
+        } finally {
+            lock.unlock();
         }
         return BeanUtil.convert(userRegisterRequest, UserRegisterResponse.class);
     }
@@ -119,15 +152,17 @@ public class UserServiceImpl implements UserService {
         if (StrUtil.isBlank(password) || StrUtil.isBlank(username)) {
             throw new BusinessException(UserExceptionEnum.USER_LOGIN_FAIL_NONE_PASSWORD);
         }
-        //TODO 用户名需要唯一，因为支持使用用户名登录
         String md5Password = Md5SecurityUtil.getMd5Value(password);
         LambdaQueryWrapper<UserInfoEntity> queryWrapper = Wrappers.lambdaQuery(UserInfoEntity.class)
                 .eq(UserInfoEntity::getUsername, username)
                 .eq(UserInfoEntity::getPassword, md5Password);
         UserLoginResponse userLoginResponse = Optional.ofNullable(this.userInfoMapper.selectOne(queryWrapper))
-                .map(item -> BeanUtil.convert(item, UserLoginResponse.class))
+                .map(item -> {
+                    UserLoginResponse convert = BeanUtil.convert(item, UserLoginResponse.class);
+                    convert.setUserId(item.getId());
+                    return convert;
+                })
                 .orElseThrow(() -> new BusinessException(UserExceptionEnum.USER_LOGIN_FAIL));
-
         userLoginResponse.setToken(this.getUserToken(userLoginResponse));
         return userLoginResponse;
     }

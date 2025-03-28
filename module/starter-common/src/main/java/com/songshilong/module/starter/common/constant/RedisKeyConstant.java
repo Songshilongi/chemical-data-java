@@ -9,10 +9,8 @@ package com.songshilong.module.starter.common.constant;
  * @Version: 1.0
  */
 public class RedisKeyConstant {
-    public static final String PROJECT_PREFIX = "chemical-data-java";
-    public static final String USER_AUTH_TOKEN = "user:auth:token";
-
-
-
+    public static final String PROJECT_PREFIX = "chemical-data-java:";
+    public static final String USER_REGISTER_USERNAME_LOCK_PREFIX = "user:register:username:lock:";
+    public static final String USER_REGISTER_USERNAME = "user:register:username:";
 
 }

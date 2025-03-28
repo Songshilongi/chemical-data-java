@@ -13,7 +13,7 @@ spring:
     password: root
 
   config:
-    import: nacos:property
+    import: nacos:user-service.yaml
   profiles:
     active: dev
   application:

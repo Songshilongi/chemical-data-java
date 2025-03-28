@@ -1,6 +1,12 @@
-chemical:
-  property:
-    jwt:
-      user:
-        secret-key: "grdgdr343gdsawaesg45th"
-        ttl-millis: 7200000
+#chemical:
+#  property:
+#    jwt:
+#      user:
+#        secret-key: "grdgdr343gdsawaesg45th"
+#        ttl-millis: 7200000
+#    bloom:
+#      filter:
+#        username:
+#          name: user_register_bloom_filter
+#          expected-interceptors: 64
+#          false-probability: 0.03

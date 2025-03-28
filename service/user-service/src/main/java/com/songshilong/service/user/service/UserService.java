@@ -28,4 +28,11 @@ public interface UserService {
      * @return {@link UserLoginResponse} login response
      */
     UserLoginResponse login(UserLoginRequest userLoginRequest);
+
+    /**
+     * 判断用户名是否已经存在
+     * @param username 用户名
+     * @return true-已经存在 false-不存在
+     */
+    Boolean hasUsername(String username);
 }

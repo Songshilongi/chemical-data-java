@@ -1,6 +1,7 @@
 package com.songshilong.service.user;
 
-import com.songshilong.module.starter.common.properties.UserJwtProperty;
+import com.songshilong.service.user.properties.UserJwtProperty;
+import com.songshilong.service.user.properties.UsernameBloomFilterProperty;
 import com.songshilong.module.starter.common.utils.BeanUtil;
 import com.songshilong.module.starter.common.utils.Md5SecurityUtil;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -23,7 +23,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @SpringBootTest
 public class NacosTest {
 
-    @Value("${user.name}")
+    @Value("${test.name}")
     private String name;
 
     @Autowired
@@ -31,6 +31,9 @@ public class NacosTest {
 
     @Autowired
     private UserJwtProperty userJwtProperty;
+
+    @Autowired
+    private UsernameBloomFilterProperty usernameBloomFilterProperty;
 
 
     @Test
@@ -79,6 +82,7 @@ public class NacosTest {
     @Test
     public void testProperty() {
         System.out.println(userJwtProperty);
+        System.out.println(usernameBloomFilterProperty);
     }
 
 
