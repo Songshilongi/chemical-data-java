@@ -93,6 +93,7 @@ public class UserServiceImpl implements UserService {
             } catch (DuplicateKeyException exception) {
                 throw new BusinessException(UserExceptionEnum.USER_EXIST);
             }
+            usernameBloomFilter.add(username);
             redisUtil.setAdd(RedisKeyConstant.USER_REGISTER_USERNAME + UserUtil.hashShardingIndex(username), username);
         } finally {
             lock.unlock();
