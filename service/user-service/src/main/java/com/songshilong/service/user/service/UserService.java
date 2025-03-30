@@ -1,7 +1,9 @@
 package com.songshilong.service.user.service;
 
+import com.songshilong.service.user.dto.request.PasswordMailResetRequest;
 import com.songshilong.service.user.dto.request.UserLoginRequest;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
+import com.songshilong.service.user.dto.response.PasswordMailResetResponse;
 import com.songshilong.service.user.dto.response.UserLoginResponse;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
 
@@ -35,4 +37,11 @@ public interface UserService {
      * @return true-已经存在 false-不存在
      */
     Boolean hasUsername(String username);
+
+    /**
+     *  获取密码重置邮箱验证码
+     * @param passwordMailResetRequest  {@link PasswordMailResetRequest} 获取邮箱验证码的请求参数
+     * @return {@link PasswordMailResetResponse} 响应结果
+     */
+    PasswordMailResetResponse getPasswordMailResetCode(PasswordMailResetRequest passwordMailResetRequest);
 }

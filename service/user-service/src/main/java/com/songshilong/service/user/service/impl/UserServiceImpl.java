@@ -14,8 +14,10 @@ import com.songshilong.module.starter.common.utils.JwtUtil;
 import com.songshilong.module.starter.common.utils.Md5SecurityUtil;
 import com.songshilong.service.user.dao.entity.UserInfoEntity;
 import com.songshilong.service.user.dao.mapper.UserInfoMapper;
+import com.songshilong.service.user.dto.request.PasswordMailResetRequest;
 import com.songshilong.service.user.dto.request.UserLoginRequest;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
+import com.songshilong.service.user.dto.response.PasswordMailResetResponse;
 import com.songshilong.service.user.dto.response.UserLoginResponse;
 import com.songshilong.service.user.dto.response.UserRegisterResponse;
 import com.songshilong.service.user.properties.UserJwtProperty;
@@ -55,6 +57,12 @@ public class UserServiceImpl implements UserService {
     private static final int LOGIN_TYPE_PASSWORD = 1;
     private static final int LOGIN_TYPE_EMAIL = 2;
     private static final int LOGIN_TYPE_PHONE = 3;
+
+
+    @Override
+    public PasswordMailResetResponse getPasswordMailResetCode(PasswordMailResetRequest passwordMailResetRequest) {
+        return null;
+    }
 
     @Override
     public Boolean hasUsername(String username) {
