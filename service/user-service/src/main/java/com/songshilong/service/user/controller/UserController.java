@@ -46,4 +46,15 @@ public class UserController {
     }
 
 
+    @PostMapping("/mail-code")
+    @ApiOperation(value = "获取邮箱验证码")
+    public void code(){
+
+    }
+
+    @PostMapping("/reset")
+    @ApiOperation(value = "重置密码")
+    public void reset() {
+
+    }
 }

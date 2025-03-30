@@ -10,3 +10,23 @@
 #          name: user_register_bloom_filter
 #          expected-interceptors: 64
 #          false-probability: 0.03
+#spring:
+#  mail:
+#    host: 端口
+#    username: 邮箱地址
+#    password: 授权码
+#    port: 465
+#    default-encoding: UTF-8
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: true
+#          ssl:
+#            enable: true
+#          socketFactory:
+#            port: 465
+#            class: javax.net.ssl.SSLSocketFactory
+

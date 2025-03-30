@@ -18,6 +18,7 @@
         <module>starter-database</module>
         <module>starter-web</module>
         <module>starter-cache</module>
+        <module>starter-mail</module>
     </modules>
 
 

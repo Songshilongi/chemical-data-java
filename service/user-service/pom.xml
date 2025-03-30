@@ -49,6 +49,12 @@
             <artifactId>starter-cache</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--Mail Starter-->
+        <dependency>
+            <groupId>com.songshilong</groupId>
+            <artifactId>starter-mail</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
 
 
