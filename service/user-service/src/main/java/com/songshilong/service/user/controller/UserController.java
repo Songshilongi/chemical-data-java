@@ -48,7 +48,7 @@ public class UserController {
 
 
     @PostMapping("/reset/mail-code")
-    @ApiOperation(value = "获取密码重置邮箱验证码")
+    @ApiOperation(value = "获取邮箱验证码用于重置密码")
     public Result<PasswordMailResetResponse> getPasswordMailResetCode(@RequestBody PasswordMailResetRequest passwordMailResetRequest){
         PasswordMailResetResponse response = userService.getPasswordMailResetCode(passwordMailResetRequest);
         return Result.success(response);

@@ -19,11 +19,11 @@ import lombok.Data;
 public class PasswordMailResetRequest {
 
     @ApiModelProperty("唯一用户名")
-    @NotNull
+    @NotNull(message = "用户名不能为空")
     private String username;
 
     @ApiModelProperty("邮箱地址")
-    @Email
+    @Email(message = "邮箱地址格式不正确")
     private String email;
 
 

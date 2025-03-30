@@ -13,4 +13,14 @@ public class RedisKeyConstant {
     public static final String USER_REGISTER_USERNAME_LOCK_PREFIX = "user:register:username:lock:";
     public static final String USER_REGISTER_USERNAME = "user:register:username:";
 
+    /**
+     * 用户邮箱找回密码的Redis Key前缀
+     */
+    public static final String USER_RESET_PASSWORD_EMAIL_PREFIX = "user:email-reset-password:verify:username:";
+    /**
+     * 用户邮箱找回密码时限制一定时间内只能存在一次
+     */
+    public static final String USER_RESET_PASSWORD_FLAG_PREFIX = "user:email-reset-password:flag:username:";
+
+
 }

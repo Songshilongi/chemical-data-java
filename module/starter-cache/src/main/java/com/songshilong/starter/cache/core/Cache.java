@@ -11,6 +11,9 @@ import java.util.concurrent.TimeUnit;
  * @Version: 1.0
  */
 public interface Cache {
+
+    String get(String key);
+
     /**
      * 获取缓存对象 - String
      *

@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public Result<Object> handleBusinessException(BusinessException e) {
-        return Result.fail(500, e.getMessage(), null);
+        return Result.fail(500, e.errorMsg(), null);
     }
 
 

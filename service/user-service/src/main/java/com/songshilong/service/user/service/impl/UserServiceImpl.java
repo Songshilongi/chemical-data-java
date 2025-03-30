@@ -1,11 +1,13 @@
 package com.songshilong.service.user.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.songshilong.module.starter.common.constant.Constant;
 import com.songshilong.module.starter.common.constant.RedisKeyConstant;
 import com.songshilong.module.starter.common.enums.ClientExceptionEnum;
+import com.songshilong.module.starter.common.enums.MailExceptionEnum;
 import com.songshilong.module.starter.common.enums.UserExceptionEnum;
 import com.songshilong.module.starter.common.exception.BusinessException;
 import com.songshilong.module.starter.common.exception.ClientException;
@@ -24,6 +26,7 @@ import com.songshilong.service.user.properties.UserJwtProperty;
 import com.songshilong.service.user.service.UserService;
 import com.songshilong.service.user.util.UserUtil;
 import com.songshilong.starter.cache.core.RedisUtil;
+import com.songshilong.starter.mail.EmailUtil;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
@@ -35,6 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -53,15 +57,49 @@ public class UserServiceImpl implements UserService {
     private final RedissonClient redissonClient;
     private final RBloomFilter<String> usernameBloomFilter;
     private final RedisUtil redisUtil;
+    private final EmailUtil emailUtil;
 
     private static final int LOGIN_TYPE_PASSWORD = 1;
     private static final int LOGIN_TYPE_EMAIL = 2;
     private static final int LOGIN_TYPE_PHONE = 3;
 
+    private static final Integer USER_RESET_FREQUENCY = 1;
 
     @Override
     public PasswordMailResetResponse getPasswordMailResetCode(PasswordMailResetRequest passwordMailResetRequest) {
-        return null;
+        String username = passwordMailResetRequest.getUsername();
+        String email = passwordMailResetRequest.getEmail();
+        // 发送频率限制
+        String flag = RedisKeyConstant.USER_RESET_PASSWORD_FLAG_PREFIX + username;
+        if (StrUtil.isNotBlank(redisUtil.get(flag))) {
+            throw new BusinessException(MailExceptionEnum.TOO_FREQUENCY);
+        }
+        // 检查用户是否存在
+        LambdaQueryWrapper<UserInfoEntity> wrapper = Wrappers.lambdaQuery(UserInfoEntity.class)
+                .select(UserInfoEntity::getId)
+                .eq(UserInfoEntity::getUsername, username)
+                .eq(UserInfoEntity::getEmail, email);
+        UserInfoEntity userInfoEntity = this.userInfoMapper.selectOne(wrapper);
+        if (Objects.isNull(userInfoEntity)) {
+            throw new BusinessException(UserExceptionEnum.USER_NOT_EXIST);
+        }
+        // 发送邮件
+        String verifyCode = RandomUtil.randomString(10);
+        redisUtil.set(RedisKeyConstant.USER_RESET_PASSWORD_EMAIL_PREFIX + username, verifyCode, 5, TimeUnit.MINUTES);
+        redisUtil.set(flag, verifyCode, USER_RESET_FREQUENCY, TimeUnit.MINUTES);
+        emailUtil.send(email, "Chemical-Data—Platform", this.buildEmailContent(verifyCode));
+        return BeanUtil.convert(passwordMailResetRequest, PasswordMailResetResponse.class);
+    }
+
+    private String buildEmailContent(String verifyCode) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<html><head><title>多模态</title></head><body>");
+        builder.append("您好<br/>");
+        builder.append("您的验证码是：").append(verifyCode).append("<br/>");
+        builder.append("您可以复制此验证码并返回至多模态化学信息抽取平台系统找回密码页面，以验证您的邮箱。<br/>");
+        builder.append("此验证码只能使用一次，在5分钟内有效。验证成功则自动失效。<br/>");
+        builder.append("如果您没有进行上述操作，请忽略此邮件。");
+        return builder.toString();
     }
 
     @Override

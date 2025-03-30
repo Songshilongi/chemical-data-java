@@ -20,6 +20,11 @@ public class RedisUtil implements Cache {
     private final StringRedisTemplate redisTemplate;
 
     @Override
+    public String get(String key) {
+        return redisTemplate.opsForValue().get(key);
+    }
+
+    @Override
     public <T> T get(String key, Class<T> clazz) {
         String value = redisTemplate.opsForValue().get(key);
         return BeanUtil.toObject(value, clazz);

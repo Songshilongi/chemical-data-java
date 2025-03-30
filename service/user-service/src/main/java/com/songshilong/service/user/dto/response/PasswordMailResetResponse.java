@@ -24,7 +24,4 @@ public class PasswordMailResetResponse {
     @ApiModelProperty("邮箱地址")
     private String email;
 
-    @ApiModelProperty("用于重置密码的验证码")
-    private String validCode;
-
 }
