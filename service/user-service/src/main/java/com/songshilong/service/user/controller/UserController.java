@@ -2,6 +2,7 @@ package com.songshilong.service.user.controller;
 
 import com.songshilong.module.starter.common.result.Result;
 import com.songshilong.service.user.dto.request.PasswordMailResetRequest;
+import com.songshilong.service.user.dto.request.ResetPasswordRequest;
 import com.songshilong.service.user.dto.request.UserLoginRequest;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.PasswordMailResetResponse;
@@ -56,7 +57,8 @@ public class UserController {
 
     @PostMapping("/reset")
     @ApiOperation(value = "重置密码")
-    public void reset() {
-
+    public Result<Boolean> resetPasswordByEmailVerifyCode(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+        Boolean result = userService.resetPasswordByEmailVerifyCode(resetPasswordRequest);
+        return Result.success(result);
     }
 }

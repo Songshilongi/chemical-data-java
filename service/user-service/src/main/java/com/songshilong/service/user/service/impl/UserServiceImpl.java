@@ -3,6 +3,7 @@ package com.songshilong.service.user.service.impl;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.songshilong.module.starter.common.constant.Constant;
 import com.songshilong.module.starter.common.constant.RedisKeyConstant;
@@ -17,6 +18,7 @@ import com.songshilong.module.starter.common.utils.Md5SecurityUtil;
 import com.songshilong.service.user.dao.entity.UserInfoEntity;
 import com.songshilong.service.user.dao.mapper.UserInfoMapper;
 import com.songshilong.service.user.dto.request.PasswordMailResetRequest;
+import com.songshilong.service.user.dto.request.ResetPasswordRequest;
 import com.songshilong.service.user.dto.request.UserLoginRequest;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.PasswordMailResetResponse;
@@ -65,6 +67,45 @@ public class UserServiceImpl implements UserService {
 
     private static final Integer USER_RESET_FREQUENCY = 1;
 
+
+    @Override
+    public Boolean resetPasswordByEmailVerifyCode(ResetPasswordRequest resetPasswordRequest) {
+        String username = resetPasswordRequest.getUsername();
+        String email = resetPasswordRequest.getEmail();
+        String newPassword = resetPasswordRequest.getNewPassword();
+        String verifyCode = resetPasswordRequest.getVerifyCode();
+        UserInfoEntity userInfoEntity = this.findUserByUsernameAndEmail(username, email);
+        if (Objects.isNull(userInfoEntity)) {
+            throw new BusinessException(UserExceptionEnum.USER_NOT_EXIST);
+        }
+        String verifyCodeKey = RedisKeyConstant.USER_RESET_PASSWORD_EMAIL_PREFIX + username;
+        String value = redisUtil.get(verifyCodeKey);
+        if (StrUtil.isBlank(value)) {
+            throw new BusinessException(MailExceptionEnum.VERIFY_CODE_EXPIRED);
+        }
+        if (!StrUtil.equals(verifyCode, value)) {
+            throw new BusinessException(MailExceptionEnum.VERIFY_CODE_WRONG);
+        }
+        newPassword = Md5SecurityUtil.getMd5Value(newPassword);
+        LambdaUpdateWrapper<UserInfoEntity> updateWrapper = Wrappers.lambdaUpdate(UserInfoEntity.class)
+                .set(UserInfoEntity::getPassword, newPassword)
+                .eq(UserInfoEntity::getUsername, username)
+                .eq(UserInfoEntity::getEmail, email);
+        int update = this.userInfoMapper.update(null, updateWrapper);
+        if (update != 1) {
+            throw new BusinessException(UserExceptionEnum.PASSWORD_UPDATE_FAIL);
+        }
+        return Boolean.TRUE;
+    }
+
+    private UserInfoEntity findUserByUsernameAndEmail(String username, String email) {
+        LambdaQueryWrapper<UserInfoEntity> wrapper = Wrappers.lambdaQuery(UserInfoEntity.class)
+                .select(UserInfoEntity::getId)
+                .eq(UserInfoEntity::getUsername, username)
+                .eq(UserInfoEntity::getEmail, email);
+        return this.userInfoMapper.selectOne(wrapper);
+    }
+
     @Override
     public PasswordMailResetResponse getPasswordMailResetCode(PasswordMailResetRequest passwordMailResetRequest) {
         String username = passwordMailResetRequest.getUsername();
@@ -75,11 +116,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(MailExceptionEnum.TOO_FREQUENCY);
         }
         // 检查用户是否存在
-        LambdaQueryWrapper<UserInfoEntity> wrapper = Wrappers.lambdaQuery(UserInfoEntity.class)
-                .select(UserInfoEntity::getId)
-                .eq(UserInfoEntity::getUsername, username)
-                .eq(UserInfoEntity::getEmail, email);
-        UserInfoEntity userInfoEntity = this.userInfoMapper.selectOne(wrapper);
+        UserInfoEntity userInfoEntity = this.findUserByUsernameAndEmail(username, email);
         if (Objects.isNull(userInfoEntity)) {
             throw new BusinessException(UserExceptionEnum.USER_NOT_EXIST);
         }

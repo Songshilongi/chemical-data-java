@@ -1,6 +1,7 @@
 package com.songshilong.service.user.service;
 
 import com.songshilong.service.user.dto.request.PasswordMailResetRequest;
+import com.songshilong.service.user.dto.request.ResetPasswordRequest;
 import com.songshilong.service.user.dto.request.UserLoginRequest;
 import com.songshilong.service.user.dto.request.UserRegisterRequest;
 import com.songshilong.service.user.dto.response.PasswordMailResetResponse;
@@ -44,4 +45,11 @@ public interface UserService {
      * @return {@link PasswordMailResetResponse} 响应结果
      */
     PasswordMailResetResponse getPasswordMailResetCode(PasswordMailResetRequest passwordMailResetRequest);
+
+    /**
+     * 通过邮件验证码重置密码
+     * @param resetPasswordRequest {@link ResetPasswordRequest} 重置密码的请求参数
+     * @return true-重置成功 false-重置失败
+     */
+    Boolean resetPasswordByEmailVerifyCode(ResetPasswordRequest resetPasswordRequest);
 }
