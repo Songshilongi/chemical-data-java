@@ -5,22 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.songshilong</groupId>
-        <artifactId>chemical-data-java</artifactId>
+        <artifactId>module</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>module</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>starter-mq</artifactId>
 
 
-    <modules>
-        <module>starter-common</module>
-        <module>starter-database</module>
-        <module>starter-web</module>
-        <module>starter-cache</module>
-        <module>starter-mail</module>
-        <module>starter-mq</module>
-    </modules>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

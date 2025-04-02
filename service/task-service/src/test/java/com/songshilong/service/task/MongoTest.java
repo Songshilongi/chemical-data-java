@@ -1,7 +1,9 @@
 package com.songshilong.service.task;
 
+import com.mongodb.client.MongoClient;
 import com.songshilong.service.task.dao.entity.TextProcessResultEntity;
 import com.songshilong.service.task.dto.ReactionParam;
+import com.songshilong.starter.database.util.MongoUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,21 +29,21 @@ public class MongoTest {
 
 
     @Autowired
-    private MongoOperations mongoOperations;
+    private MongoUtil mongoUtil;
 
 
     @Test
     public void connect() {
         TextProcessResultEntity entity = new TextProcessResultEntity();
-//        entity.setId(String.valueOf(Math.random() * 100000));
-        entity.setId("2132321321323");
+        entity.setId(String.valueOf(Math.random() * 100000));
+//        entity.setId("2132321321323");
         entity.setChemicalText("hello world");
         List<ReactionParam> paramList = new ArrayList<ReactionParam>();
         ReactionParam reactionParam = new ReactionParam();
         reactionParam.setReactant(Collections.singletonList("reactant"));
         paramList.add(reactionParam);
         entity.setResult(paramList);
-        mongoOperations.insert(entity);
+        mongoUtil.getInstance().insert(entity);
     }
 
 
@@ -49,7 +51,7 @@ public class MongoTest {
     public void query() {
         Criteria criteria = new Criteria("id").is("2132321321323");
         Query query = new Query(criteria);
-        System.out.println(mongoOperations.findOne(query, TextProcessResultEntity.class));
+        System.out.println(mongoUtil.getInstance().findOne(query, TextProcessResultEntity.class));
     }
 
 

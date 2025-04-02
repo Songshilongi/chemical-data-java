@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.songshilong.starter.database.handler.MyMetaObjectHandler;
+import com.songshilong.starter.database.util.MongoUtil;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.MongoOperations;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -18,6 +20,15 @@ import org.springframework.context.annotation.Bean;
  */
 @AutoConfiguration
 public class MyBatisPlusAutoConfiguration {
+
+    /**
+     * MongoDb 封装类
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public MongoUtil mongoUtil(MongoOperations mongoOperations) {
+        return new MongoUtil(mongoOperations );
+    }
 
 
     /**
