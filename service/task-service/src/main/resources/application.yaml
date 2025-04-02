@@ -1,0 +1,47 @@
+server:
+  port: 9002
+  servlet:
+    context-path: /api/task-service
+
+spring:
+  application:
+    name: task-service
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.1.110:3306/chemical_data_0?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+  data:
+    mongodb:
+      authentication-database: admin
+      host: 192.168.1.110
+      port: 27017
+      username: mongo
+      password: mongo
+      database: chemical
+
+  config:
+    import: nacos:task-service.yaml
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.1.110:8848
+        namespace: ddc57837-c29e-4e51-846d-1feb554be9d0
+      config:
+        server-addr: 192.168.1.110:8848
+        namespace: ddc57837-c29e-4e51-846d-1feb554be9d0
+        file-extension: yaml
+        group: DEFAULT_GROUP
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0

@@ -44,6 +44,7 @@ public class JwtUtil {
                 .withAudience("chemical-platform")
                 .withIssuedAt(new Date(now))
                 .withExpiresAt(expiration)
+                .withClaim(Constant.USER_ID, claims.get(Constant.USER_ID))
                 .withClaim(Constant.USERNAME, claims.get(Constant.USERNAME))
                 .withClaim(Constant.EMAIL, claims.get(Constant.EMAIL))
                 .withClaim(Constant.PHONE, claims.get(Constant.PHONE))

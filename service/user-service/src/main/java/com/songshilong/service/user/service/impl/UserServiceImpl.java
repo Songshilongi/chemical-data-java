@@ -253,6 +253,7 @@ public class UserServiceImpl implements UserService {
 
     private String getUserToken(UserLoginResponse userLoginResponse) {
         Map<String, String> claims = new HashMap<>();
+        claims.put(Constant.USER_ID, String.valueOf(userLoginResponse.getUserId()));
         claims.put(Constant.USERNAME, userLoginResponse.getUsername());
         claims.put(Constant.EMAIL, userLoginResponse.getEmail());
         claims.put(Constant.PHONE, userLoginResponse.getPhone());
