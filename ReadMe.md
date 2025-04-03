@@ -17,7 +17,7 @@
 位于 /source/sql
 
 ## 整体框架
-<img src="./source/image/arc.png" width="800" height="400" alt="整体框架">
+<img src="./source/image/img.png" width="800" height="400" alt="整体框架">
 
 
 ## 注意
