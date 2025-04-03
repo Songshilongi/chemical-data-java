@@ -1,7 +1,12 @@
 package com.songshilong.service.task.dto.response;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -13,8 +18,17 @@ import lombok.Data;
  */
 @Data
 @ApiModel("创建任务需要返回的结果")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateTaskResponse {
 
+
+    @ApiModelProperty("任务类型")
+    private String taskType;
+
+    @ApiModelProperty("任务创建成功返回的任务ID")
+    private Long taskId;
 
 
 

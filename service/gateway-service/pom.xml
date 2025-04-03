@@ -35,6 +35,13 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
+        <!--Common-->
+        <dependency>
+            <groupId>com.songshilong</groupId>
+            <artifactId>starter-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
 

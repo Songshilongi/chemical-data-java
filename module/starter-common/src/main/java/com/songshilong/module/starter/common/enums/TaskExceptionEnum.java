@@ -10,7 +10,9 @@ package com.songshilong.module.starter.common.enums;
  */
 public enum TaskExceptionEnum implements ExceptionHandler{
     TASK_TYPE_NOT_DEFINED(60001, "任务类型未定义"),
-    TASK_TYPE_NOT_EXIST(60002, "任务类型不存在");
+    TASK_TYPE_NOT_EXIST(60002, "任务类型不存在"),
+    TASK_CREATE_FAIL(60002, "任务创建失败")
+    ;
 
 
     private final Integer errorCode;

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.songshilong.starter.database.base.BaseEntity;
-import lombok.Data;
+import lombok.*;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -14,8 +14,12 @@ import lombok.Data;
  * @Description: TaskRecordEntity
  * @Version: 1.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("task_record")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TaskRecordEntity extends BaseEntity {
     /**
      * 主键ID
@@ -25,7 +29,7 @@ public class TaskRecordEntity extends BaseEntity {
     /**
      * 用户ID
      */
-    private Long userID;
+    private Long userId;
     /**
      * 任务类型 {@link com.songshilong.module.starter.common.enums.TaskTypeEnum}
      */

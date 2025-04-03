@@ -65,6 +65,7 @@ public class JwtUtil {
         Map<String, String> result = new HashMap<>();
         try {
             DecodedJWT verify = JWT.require(Algorithm.HMAC384(secretKey)).build().verify(token);
+            result.put(Constant.USER_ID, verify.getClaim(Constant.USER_ID).asString());
             result.put(Constant.USERNAME, verify.getClaim(Constant.USERNAME).asString());
             result.put(Constant.EMAIL, verify.getClaim(Constant.EMAIL).asString());
             result.put(Constant.PHONE, verify.getClaim(Constant.PHONE).asString());
