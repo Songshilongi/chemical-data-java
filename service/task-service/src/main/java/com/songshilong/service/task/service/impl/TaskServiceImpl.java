@@ -11,9 +11,11 @@ import com.songshilong.module.starter.common.exception.BusinessException;
 import com.songshilong.module.starter.common.exception.ClientException;
 import com.songshilong.service.task.context.BaseContext;
 import com.songshilong.service.task.dao.entity.TaskRecordEntity;
+import com.songshilong.service.task.dao.entity.TextProcessResultEntity;
 import com.songshilong.service.task.dao.mapper.TaskRecordMapper;
 import com.songshilong.service.task.dto.response.CreateTaskResponse;
 import com.songshilong.service.task.service.TaskService;
+import com.songshilong.starter.database.util.MongoUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,7 @@ public class TaskServiceImpl implements TaskService {
 
     private final SnowflakeGenerator snowflakeGenerator;
     private final TaskRecordMapper taskRecordMapper;
+    private final MongoUtil mongoUtil;
 
 
     @Override
@@ -88,8 +91,12 @@ public class TaskServiceImpl implements TaskService {
                 .dataId(String.valueOf(dataId))
                 .status(TaskStatusEnum.CREATE_BUT_NOT_START.code())
                 .build();
+        TextProcessResultEntity entity = new TextProcessResultEntity();
+        entity.setId(String.valueOf(dataId));
+        entity.setChemicalText(chemicalText);
         try {
             int insert = taskRecordMapper.insert(taskRecordEntity);
+            mongoUtil.getInstance().insert(entity);
             if (insert != 1) {
                 throw new BusinessException(TaskExceptionEnum.TASK_CREATE_FAIL);
             }
