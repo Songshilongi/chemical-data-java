@@ -14,15 +14,16 @@ spring:
             - Path=/open-api/task-service/**
           filters:
             - RewritePath=/open-api/task-service/(?<segment>.*), /api/task-service/$\{segment}
-chemical:
-  property:
-    filter:
-      black-path:
-        black-path-list:
-          - /open-api/task-service/
-          - /open-api/user-service/
-        white-path-list:
-          - /open-api/user-service/login
-          - /open-api/user-service/register
-          - /open-api/user-service/reset/mail-code
-          - /open-api/user-service/reset
+            - name: JwtTokenFilter
+              args:
+                blackPathPre:
+                  - /api/task-service/
+                  - /api/user-service/
+                whitePathPre:
+                  - /api/user-service/login
+                  - /api/user-service/register
+                  - /api/user-service/reset/mail-code
+                  - /api/user-service/reset
+                jwtSecret: grdgdr343gdsawaesg45th
+
+

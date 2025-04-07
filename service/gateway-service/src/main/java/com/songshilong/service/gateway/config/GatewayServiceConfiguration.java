@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
  * @Version: 1.0
  */
 @Configuration
-@EnableConfigurationProperties(FilterConfig.class)
 public class GatewayServiceConfiguration {
 
 

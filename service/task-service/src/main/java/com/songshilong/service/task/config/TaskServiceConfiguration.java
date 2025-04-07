@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -21,7 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 @Configuration
 @EnableConfigurationProperties(SnowFlakeProperties.class)
 @RequiredArgsConstructor
-public class TaskServiceConfiguration extends WebMvcConfigurationSupport {
+public class TaskServiceConfiguration implements WebMvcConfigurer {
 
     private final SnowFlakeProperties snowFlakeProperties;
     private final TaskHeaderInterceptor taskHeaderInterceptor;
@@ -33,9 +34,9 @@ public class TaskServiceConfiguration extends WebMvcConfigurationSupport {
 
 
     @Override
-    protected void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(taskHeaderInterceptor)
-                .addPathPatterns("/api/task-service/**");
-        super.addInterceptors(registry);
+                .addPathPatterns("/**");
+        System.out.println("dwada");
     }
 }

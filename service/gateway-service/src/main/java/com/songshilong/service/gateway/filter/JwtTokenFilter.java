@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import com.songshilong.module.starter.common.constant.Constant;
 import com.songshilong.module.starter.common.utils.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
@@ -37,10 +38,10 @@ public class JwtTokenFilter extends AbstractGatewayFilterFactory<FilterConfig> {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             String requestPath = request.getPath().toString();
-            if (this.isWhitePath(config.getWhitePathList(), requestPath)) {
+            if (this.isWhitePath(config.getWhitePathPre(), requestPath)) {
                 return chain.filter(exchange);
             }
-            if (this.isBlackPath(config.getBlackPathList(), requestPath)) {
+            if (this.isBlackPath(config.getBlackPathPre(), requestPath)) {
                 String token = request.getHeaders().getFirst("Authorization");
                 ServerHttpResponse response = exchange.getResponse();
                 if (token == null || !token.startsWith(TOKEN_PREFIX)) {

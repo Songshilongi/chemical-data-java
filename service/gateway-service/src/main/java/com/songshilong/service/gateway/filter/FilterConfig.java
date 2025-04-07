@@ -14,19 +14,17 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
-@ConfigurationProperties(prefix = FilterConfig.PREFIX)
 public class FilterConfig {
-    public static final String PREFIX = "chemical.property.filter.black-path";
 
     /**
      * 黑名单列表-需要被拦截的
      */
-    private List<String> blackPathList;
+    private List<String> blackPathPre;
 
     /**
      * 白名单，需要直接被放行
      */
-    private List<String> whitePathList;
+    private List<String> whitePathPre;
 
     /**
      * Jwt密钥
