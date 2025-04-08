@@ -20,8 +20,8 @@ public class SmilesProcessResultEntity {
     @Id
     private String id;
 
-    @Field("raw_url")
-    private String rawUrl;
+    @Field("oss_url")
+    private String ossUrl;
 
 
 

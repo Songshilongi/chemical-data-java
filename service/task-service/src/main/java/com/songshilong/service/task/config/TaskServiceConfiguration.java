@@ -1,14 +1,15 @@
 package com.songshilong.service.task.config;
 
 import cn.hutool.core.lang.generator.SnowflakeGenerator;
+import com.aliyun.oss.OSSClient;
 import com.songshilong.service.task.interceptor.TaskHeaderInterceptor;
+import com.songshilong.service.task.properties.AliYunOssProperty;
 import com.songshilong.service.task.properties.SnowFlakeProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Version: 1.0
  */
 @Configuration
-@EnableConfigurationProperties(SnowFlakeProperties.class)
+@EnableConfigurationProperties({SnowFlakeProperties.class, AliYunOssProperty.class})
 @RequiredArgsConstructor
 public class TaskServiceConfiguration implements WebMvcConfigurer {
 

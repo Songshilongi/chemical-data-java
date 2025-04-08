@@ -41,6 +41,14 @@
             <artifactId>starter-web</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.18.1</version>
+        </dependency>
     </dependencies>
 
 

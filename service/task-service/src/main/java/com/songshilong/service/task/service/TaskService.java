@@ -1,6 +1,5 @@
 package com.songshilong.service.task.service;
 
-import com.songshilong.service.task.dto.response.CreateTaskResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -18,7 +17,7 @@ public interface TaskService {
      * @param chemicalText - 文本抽取的时候需要上传的有机化合合成反应文本
      * @param files - smiles/reaction/reaxys 对应 图片/图片/文件
      */
-    CreateTaskResponse createTask(String type, String chemicalText, MultipartFile[] files);
+    void createTask(String type, String chemicalText, MultipartFile[] files);
 
 
 }
