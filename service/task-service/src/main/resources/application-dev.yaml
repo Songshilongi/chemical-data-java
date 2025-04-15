@@ -1,12 +1,3 @@
 
 
 # 阿里云Oss配置参数
-chemical:
-  property:
-    task:
-      oss:
-        endpoint: oss-cn-beijing.aliyuncs.com
-        key-id: LTAI5tHkaqyr4CMjgsoFzayz
-        key-secret: 7ziyNtNfPu9orv5XFXVsFP5tEWY4ui
-        bucket-name: songshilong
-        region: cn-beijing
