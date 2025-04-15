@@ -9,9 +9,7 @@ import com.songshilong.module.starter.common.enums.TaskStatusEnum;
 import com.songshilong.module.starter.common.enums.TaskTypeEnum;
 import com.songshilong.module.starter.common.exception.BusinessException;
 import com.songshilong.service.task.context.BaseContext;
-import com.songshilong.service.task.dao.entity.SmilesProcessResultEntity;
-import com.songshilong.service.task.dao.entity.IETaskRecordEntity;
-import com.songshilong.service.task.dao.entity.TextProcessResultEntity;
+import com.songshilong.service.task.dao.entity.*;
 import com.songshilong.service.task.dao.mapper.IETaskRecordMapper;
 import com.songshilong.service.task.service.TaskService;
 import com.songshilong.service.task.util.AliOssUtil;
@@ -75,7 +73,30 @@ public class TaskServiceImpl implements TaskService {
      * @param files 需要被识别的Reaxys PDF 文件
      */
     private void processReaxys(MultipartFile[] files) {
-
+        if (ArrayUtil.isEmpty(files)) {
+            return;
+        }
+        for (MultipartFile file : files) {
+            Long dataId = Optional.ofNullable(snowflakeGenerator.next()).orElseThrow(() -> new RuntimeException("雪花算法生成错误"));
+            IETaskRecordEntity ieTaskRecordEntity = IETaskRecordEntity.builder()
+                    .userId(Long.valueOf(String.valueOf(BaseContext.getContext(Constant.USER_ID))))
+                    .taskType(TaskTypeEnum.REAXYS.code())
+                    .dataId(String.valueOf(dataId))
+                    .status(TaskStatusEnum.CREATE_BUT_NOT_START.code())
+                    .build();
+            ReaxysProcessResultEntity reaxysProcessResultEntity = new ReaxysProcessResultEntity();
+            reaxysProcessResultEntity.setId(String.valueOf(dataId));
+            reaxysProcessResultEntity.setOssUrl(aliOssUtil.uploadFile(file, TaskTypeEnum.REACTION));
+            try {
+                int insert = ieTaskRecordMapper.insert(ieTaskRecordEntity);
+                mongoUtil.getInstance().insert(reaxysProcessResultEntity);
+                if (insert != 1) {
+                    throw new BusinessException(TaskExceptionEnum.TASK_CREATE_FAIL);
+                }
+            } catch (DuplicateKeyException exception) {
+                throw new BusinessException(TaskExceptionEnum.TASK_CREATE_FAIL);
+            }
+        }
     }
 
 
@@ -85,8 +106,30 @@ public class TaskServiceImpl implements TaskService {
      * @param files 需要被识别的图片文件
      */
     private void processReaction(MultipartFile[] files) {
-
-
+        if (ArrayUtil.isEmpty(files)) {
+            return;
+        }
+        for (MultipartFile file : files) {
+            Long dataId = Optional.ofNullable(snowflakeGenerator.next()).orElseThrow(() -> new RuntimeException("雪花算法生成错误"));
+            IETaskRecordEntity ieTaskRecordEntity = IETaskRecordEntity.builder()
+                    .userId(Long.valueOf(String.valueOf(BaseContext.getContext(Constant.USER_ID))))
+                    .taskType(TaskTypeEnum.REACTION.code())
+                    .dataId(String.valueOf(dataId))
+                    .status(TaskStatusEnum.CREATE_BUT_NOT_START.code())
+                    .build();
+            ReactionProcessResultEntity reactionProcessResultEntity = new ReactionProcessResultEntity();
+            reactionProcessResultEntity.setId(String.valueOf(dataId));
+            reactionProcessResultEntity.setOssUrl(aliOssUtil.uploadFile(file, TaskTypeEnum.REACTION));
+            try {
+                int insert = ieTaskRecordMapper.insert(ieTaskRecordEntity);
+                mongoUtil.getInstance().insert(reactionProcessResultEntity);
+                if (insert != 1) {
+                    throw new BusinessException(TaskExceptionEnum.TASK_CREATE_FAIL);
+                }
+            } catch (DuplicateKeyException exception) {
+                throw new BusinessException(TaskExceptionEnum.TASK_CREATE_FAIL);
+            }
+        }
     }
 
     /**
