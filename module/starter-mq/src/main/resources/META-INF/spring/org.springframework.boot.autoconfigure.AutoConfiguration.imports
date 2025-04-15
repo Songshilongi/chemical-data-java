@@ -1,0 +1,2 @@
+com.songshilong.starter.mq.config.RocketMqConfiguration
+org.apache.rocketmq.spring.autoconfigure.RocketMQAutoConfiguration

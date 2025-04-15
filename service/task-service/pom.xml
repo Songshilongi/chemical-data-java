@@ -49,6 +49,13 @@
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>3.18.1</version>
         </dependency>
+
+        <!--Rocket MQ-->
+        <dependency>
+            <groupId>com.songshilong</groupId>
+            <artifactId>starter-mq</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

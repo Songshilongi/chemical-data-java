@@ -53,3 +53,21 @@ chemical:
       worker-id: 1
       datacenter-id: 0
 
+
+
+rocketmq:
+  name-server: 192.168.1.110:9876
+  producer:
+    group: task-service-producer
+    send-message-timeout: 5000
+    retry-times-when-send-failed: 3
+    retry-times-when-send-async-failed: 3
+    # 4MB = 4 * 1024 * 1024 Byte
+    max-message-size: 4096
+    # 压缩消息-默认4KB
+    compress-message-body-threshold: 4096
+    retry-next-server: false
+  consumer:
+    group: task-service-consumer
+    # 单次拉取消息的最大值
+    pull-batch-size: 10

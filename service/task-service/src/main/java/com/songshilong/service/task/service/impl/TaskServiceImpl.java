@@ -86,7 +86,7 @@ public class TaskServiceImpl implements TaskService {
                     .build();
             ReaxysProcessResultEntity reaxysProcessResultEntity = new ReaxysProcessResultEntity();
             reaxysProcessResultEntity.setId(String.valueOf(dataId));
-            reaxysProcessResultEntity.setOssUrl(aliOssUtil.uploadFile(file, TaskTypeEnum.REACTION));
+            reaxysProcessResultEntity.setOssUrl(aliOssUtil.uploadFile(file, TaskTypeEnum.REAXYS));
             try {
                 int insert = ieTaskRecordMapper.insert(ieTaskRecordEntity);
                 mongoUtil.getInstance().insert(reaxysProcessResultEntity);
