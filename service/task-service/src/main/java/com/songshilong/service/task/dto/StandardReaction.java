@@ -1,6 +1,7 @@
 package com.songshilong.service.task.dto;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
-public class ReactionParam implements Serializable {
+public class StandardReaction implements Serializable {
     private static final long serialVersionUID = 328479823748932L;
 
     /**
@@ -52,5 +53,6 @@ public class ReactionParam implements Serializable {
     /**
      * 产量/产率
      */
-    private List<String> yield;
+    @Field("yield_rate")
+    private List<String> yieldRate;
 }

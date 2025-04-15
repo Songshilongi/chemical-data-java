@@ -1,18 +1,16 @@
 package com.songshilong.service.task;
 
-import com.mongodb.client.MongoClient;
+import com.songshilong.service.task.dao.entity.SmilesProcessResultEntity;
 import com.songshilong.service.task.dao.entity.TextProcessResultEntity;
-import com.songshilong.service.task.dto.ReactionParam;
+import com.songshilong.service.task.dto.StandardReaction;
 import com.songshilong.starter.database.util.MongoUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,14 +31,33 @@ public class MongoTest {
 
 
     @Test
+    public void smiles() {
+        SmilesProcessResultEntity data = SmilesProcessResultEntity
+                .builder()
+                .id(String.valueOf(Math.random() * 100000))
+                .ossUrl("url")
+                .smiles("COH@")
+                .build();
+        mongoUtil.getInstance().insert(data);
+    }
+
+    @Test
     public void connect() {
         TextProcessResultEntity entity = new TextProcessResultEntity();
         entity.setId(String.valueOf(Math.random() * 100000));
 //        entity.setId("2132321321323");
         entity.setChemicalText("hello world");
-        List<ReactionParam> paramList = new ArrayList<ReactionParam>();
-        ReactionParam reactionParam = new ReactionParam();
-        reactionParam.setReactant(Collections.singletonList("reactant"));
+        List<StandardReaction> paramList = new ArrayList<StandardReaction>();
+        StandardReaction reactionParam = new StandardReaction();
+        reactionParam.setReactant(Collections.singletonList("test"));
+        reactionParam.setProduct(Collections.singletonList("test"));
+        reactionParam.setCatalyst(Collections.singletonList("test"));
+        reactionParam.setSolvent(Collections.singletonList("test"));
+        reactionParam.setReagent(Collections.singletonList("test"));
+        reactionParam.setAfter(Collections.singletonList("test"));
+        reactionParam.setTemperature(Collections.singletonList("test"));
+        reactionParam.setTime(Collections.singletonList("test"));
+        reactionParam.setYieldRate(Collections.singletonList("test"));
         paramList.add(reactionParam);
         entity.setResult(paramList);
         mongoUtil.getInstance().insert(entity);

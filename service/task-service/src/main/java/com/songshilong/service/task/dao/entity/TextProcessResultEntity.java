@@ -1,9 +1,8 @@
 package com.songshilong.service.task.dao.entity;
 
-import com.songshilong.service.task.dto.ReactionParam;
+import com.songshilong.service.task.dto.StandardReaction;
 import lombok.Data;
 import nonapi.io.github.classgraph.json.Id;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -34,5 +33,5 @@ public class TextProcessResultEntity {
     /**
      * 抽取结果
      */
-    private List<ReactionParam> result;
+    private List<StandardReaction> result;
 }

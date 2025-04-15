@@ -1,9 +1,15 @@
 package com.songshilong.service.task.dao.entity;
 
+import jakarta.annotation.Nonnull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.List;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -15,13 +21,24 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Data
 @Document(collection = "smiles_process_result")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SmilesProcessResultEntity {
 
     @Id
     private String id;
 
+    /**
+     * 分子结构图阿里云OSS下载地址
+     */
     @Field("oss_url")
     private String ossUrl;
+
+    /**
+     * 分子结构图对应的SMILES表达式
+     */
+    private String smiles;
 
 
 
