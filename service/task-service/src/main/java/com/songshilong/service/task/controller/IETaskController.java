@@ -16,10 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
  * @Description: TaskController
  * @Version: 1.0
  */
-@RestController
+@RestController("/ie")
 @RequiredArgsConstructor
 @Api(tags = "任务相关接口")
-public class TaskController {
+public class IETaskController {
     private final TaskService taskService;
 
 

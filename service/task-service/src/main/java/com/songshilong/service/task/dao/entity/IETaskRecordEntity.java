@@ -16,11 +16,11 @@ import lombok.*;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("task_record")
+@TableName("ie_task_record")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskRecordEntity extends BaseEntity {
+public class IETaskRecordEntity extends BaseEntity {
     /**
      * 主键ID
      */

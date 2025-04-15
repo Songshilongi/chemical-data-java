@@ -10,9 +10,9 @@ import com.songshilong.module.starter.common.enums.TaskTypeEnum;
 import com.songshilong.module.starter.common.exception.BusinessException;
 import com.songshilong.service.task.context.BaseContext;
 import com.songshilong.service.task.dao.entity.SmilesProcessResultEntity;
-import com.songshilong.service.task.dao.entity.TaskRecordEntity;
+import com.songshilong.service.task.dao.entity.IETaskRecordEntity;
 import com.songshilong.service.task.dao.entity.TextProcessResultEntity;
-import com.songshilong.service.task.dao.mapper.TaskRecordMapper;
+import com.songshilong.service.task.dao.mapper.IETaskRecordMapper;
 import com.songshilong.service.task.service.TaskService;
 import com.songshilong.service.task.util.AliOssUtil;
 import com.songshilong.starter.database.util.MongoUtil;
@@ -21,7 +21,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,7 +37,7 @@ import java.util.Optional;
 public class TaskServiceImpl implements TaskService {
 
     private final SnowflakeGenerator snowflakeGenerator;
-    private final TaskRecordMapper taskRecordMapper;
+    private final IETaskRecordMapper ieTaskRecordMapper;
     private final MongoUtil mongoUtil;
     private final AliOssUtil aliOssUtil;
 
@@ -101,7 +100,7 @@ public class TaskServiceImpl implements TaskService {
         }
         for (MultipartFile file : files) {
             Long dataId = Optional.ofNullable(snowflakeGenerator.next()).orElseThrow(() -> new RuntimeException("雪花算法生成错误"));
-            TaskRecordEntity taskRecordEntity = TaskRecordEntity.builder()
+            IETaskRecordEntity ieTaskRecordEntity = IETaskRecordEntity.builder()
                     .userId(Long.valueOf(String.valueOf(BaseContext.getContext(Constant.USER_ID))))
                     .taskType(TaskTypeEnum.SMILES.code())
                     .dataId(String.valueOf(dataId))
@@ -111,7 +110,7 @@ public class TaskServiceImpl implements TaskService {
             smilesProcessResultEntity.setId(String.valueOf(dataId));
             smilesProcessResultEntity.setOssUrl(aliOssUtil.uploadFile(file, TaskTypeEnum.SMILES));
             try {
-                int insert = taskRecordMapper.insert(taskRecordEntity);
+                int insert = ieTaskRecordMapper.insert(ieTaskRecordEntity);
                 mongoUtil.getInstance().insert(smilesProcessResultEntity);
                 if (insert != 1) {
                     throw new BusinessException(TaskExceptionEnum.TASK_CREATE_FAIL);
@@ -133,8 +132,7 @@ public class TaskServiceImpl implements TaskService {
             return;
         }
         Long dataId = Optional.ofNullable(snowflakeGenerator.next()).orElseThrow(() -> new RuntimeException("雪花算法生成错误"));
-        TaskRecordEntity taskRecordEntity = TaskRecordEntity
-                .builder()
+        IETaskRecordEntity ieTaskRecordEntity = IETaskRecordEntity.builder()
                 .userId(Long.valueOf(String.valueOf(BaseContext.getContext(Constant.USER_ID))))
                 .taskType(TaskTypeEnum.TEXT.code())
                 .dataId(String.valueOf(dataId))
@@ -144,7 +142,7 @@ public class TaskServiceImpl implements TaskService {
         entity.setId(String.valueOf(dataId));
         entity.setChemicalText(chemicalText);
         try {
-            int insert = taskRecordMapper.insert(taskRecordEntity);
+            int insert = ieTaskRecordMapper.insert(ieTaskRecordEntity);
             mongoUtil.getInstance().insert(entity);
             if (insert != 1) {
                 throw new BusinessException(TaskExceptionEnum.TASK_CREATE_FAIL);

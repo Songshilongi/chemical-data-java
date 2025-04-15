@@ -1,7 +1,7 @@
 package com.songshilong.service.task.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.songshilong.service.task.dao.entity.TaskRecordEntity;
+import com.songshilong.service.task.dao.entity.IETaskRecordEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @Version: 1.0
  */
 @Mapper
-public interface TaskRecordMapper extends BaseMapper<TaskRecordEntity> {
+public interface IETaskRecordMapper extends BaseMapper<IETaskRecordEntity> {
 }
