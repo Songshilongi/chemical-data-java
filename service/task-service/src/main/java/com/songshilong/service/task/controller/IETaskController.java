@@ -27,8 +27,8 @@ public class IETaskController {
     @PostMapping("/create/{type}")
     @ApiOperation(value = "创建任务")
     public Result<Boolean> createTask(@PathVariable String type,
-                                                 @RequestParam String chemicalText,
-                                                 @RequestParam MultipartFile[] files) {
+                                                 @RequestParam(required = false) String chemicalText,
+                                                 @RequestParam(required = false) MultipartFile[] files) {
         taskService.createTask(type, chemicalText, files);
         return Result.success(Boolean.TRUE);
     }
