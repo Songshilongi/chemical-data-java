@@ -1,6 +1,6 @@
 package com.songshilong.starter.mq.config;
 
-import com.songshilong.starter.mq.core.RocketMqUtil;
+import com.songshilong.starter.mq.core.RocketMqProducerUtil;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -19,8 +19,8 @@ public class RocketMqConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public RocketMqUtil rocketMqUtil(RocketMQTemplate rocketMQTemplate) {
-        return new RocketMqUtil(rocketMQTemplate);
+    public RocketMqProducerUtil rocketMqUtil(RocketMQTemplate rocketMQTemplate) {
+        return new RocketMqProducerUtil(rocketMQTemplate);
     }
 
 }

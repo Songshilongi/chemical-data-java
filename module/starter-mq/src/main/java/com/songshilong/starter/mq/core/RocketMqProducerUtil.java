@@ -2,10 +2,10 @@ package com.songshilong.starter.mq.core;
 
 import com.alibaba.fastjson.JSON;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import springfox.documentation.spring.web.json.Json;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -16,27 +16,50 @@ import springfox.documentation.spring.web.json.Json;
  * @Version: 1.0
  */
 @RequiredArgsConstructor
-public class RocketMqUtil {
+@Slf4j
+public class RocketMqProducerUtil {
 
     private final RocketMQTemplate rocketMQTemplate;
 
-
+    /**
+     * send Message to topic
+     * @param topic MQ topic
+     * @param data payload data
+     */
     public void sendMessage(String topic, Object data) {
         rocketMQTemplate.convertAndSend(topic, data);
+        log.info("send message to rocketmq success, topic:{}, data:{}", topic, JSON.toJSONString(data));
     }
 
-
+    /**
+     * send Message to topic and tag
+     * @param topic MQ topic
+     * @param tag MQ tag
+     * @param data payload data
+     */
     public void sendMessage(String topic, String tag, Object data) {
         rocketMQTemplate.convertAndSend(String.format("%s:%s", topic, tag), data);
+        log.info("send message to rocketmq success, topic:{}, tag:{}, data:{}", topic, tag, JSON.toJSONString(data));
     }
-
+    /**
+     * send Message to topic with Transaction
+     * @param topic MQ topic
+     * @param data payload data
+     */
     public void sendMessageWithTransaction(String topic, Object data) {
         Message<?> message = MessageBuilder.withPayload(data).build();
         rocketMQTemplate.sendMessageInTransaction(topic, message, null);
+        log.info("send message with transaction to rocketmq success, topic:{}, data:{}", topic, JSON.toJSONString(data));
     }
-
+    /**
+     * send Message to topic and tag with transaction
+     * @param topic MQ topic
+     * @param tag MQ tag
+     * @param data payload data
+     */
     public void sendMessageWithTransaction(String topic, String tag, Object data) {
         MessageBuilder<Object> messageBuilder = MessageBuilder.withPayload(data).setHeader("msg", JSON.toJSONString(data));
         rocketMQTemplate.sendMessageInTransaction(String.format("%s:%s", topic, tag), messageBuilder.build(), null);
+        log.info("send message with transaction to rocketmq success, topic:{}, tag:{}, data:{}", topic, tag, JSON.toJSONString(data));
     }
 }
