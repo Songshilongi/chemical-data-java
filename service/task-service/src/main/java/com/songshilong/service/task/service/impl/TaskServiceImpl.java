@@ -50,6 +50,38 @@ public class TaskServiceImpl implements TaskService {
     private final AliOssUtil aliOssUtil;
 
     @Override
+    public Object queryDetail(Long taskId) {
+        LambdaQueryWrapper<IETaskRecordEntity> wrapper = Wrappers.lambdaQuery(IETaskRecordEntity.class)
+                .eq(IETaskRecordEntity::getId, taskId)
+                .eq(IETaskRecordEntity::getUserId, BaseContext.getContext(Constant.USER_ID));
+        IETaskRecordEntity ieTaskRecordEntity = ieTaskRecordMapper.selectOne(wrapper);
+        if (Objects.isNull(ieTaskRecordEntity) || StrUtil.isBlank(ieTaskRecordEntity.getDataId()) || StrUtil.isBlank(ieTaskRecordEntity.getTaskType())) {
+            return null;
+        }
+        String dataId = ieTaskRecordEntity.getDataId();
+        TaskTypeEnum taskTypeEnum = Optional.ofNullable(TaskTypeEnum.getByCode(ieTaskRecordEntity.getTaskType()))
+                .orElseThrow(() -> new BusinessException(TaskExceptionEnum.TASK_TYPE_NOT_DEFINED));
+        Object data = null;
+        switch (taskTypeEnum) {
+            case TEXT:
+                data = mongoUtil.findByDataId(dataId, TextProcessResultEntity.class);
+                break;
+            case SMILES:
+                data = mongoUtil.findByDataId(dataId, SmilesProcessResultEntity.class);
+                break;
+            case REACTION:
+                data = mongoUtil.findByDataId(dataId, ReactionProcessResultEntity.class);
+                break;
+            case REAXYS:
+                data = mongoUtil.findByDataId(dataId, ReaxysProcessResultEntity.class);
+                break;
+            default:
+                throw new BusinessException(TaskExceptionEnum.TASK_TYPE_NOT_EXIST);
+        }
+        return data;
+    }
+
+    @Override
     public PageResult<QueryHistoryTaskResponse> queryHistoryTask(QueryHistoryTaskRequest queryHistoryTaskRequest) {
         IPage<IETaskRecordEntity> page = new Page<>(queryHistoryTaskRequest.getPageNumber(), queryHistoryTaskRequest.getPageSize());
         LambdaQueryWrapper<IETaskRecordEntity> wrapper = Wrappers.lambdaQuery(IETaskRecordEntity.class)

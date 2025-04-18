@@ -6,11 +6,15 @@ import com.songshilong.service.task.dto.response.QueryHistoryTaskResponse;
 import com.songshilong.service.task.service.TaskService;
 import com.songshilong.starter.database.base.PageResult;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Objects;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -43,6 +47,13 @@ public class IETaskController {
     public Result<PageResult<QueryHistoryTaskResponse>> queryHistoryTask(@Valid QueryHistoryTaskRequest queryHistoryTaskRequest) {
         PageResult<QueryHistoryTaskResponse> response = taskService.queryHistoryTask(queryHistoryTaskRequest);
         return Result.success(response);
+    }
+
+    @GetMapping("/detail/{taskId}")
+    @ApiOperation("查询任务处理结果详情")
+    public Result<Object> queryDetail(@PathVariable Long taskId) {
+        Object data = taskService.queryDetail(taskId);
+        return Result.success(data);
     }
 
 

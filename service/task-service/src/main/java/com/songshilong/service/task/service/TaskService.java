@@ -28,4 +28,12 @@ public interface TaskService {
      * @return 分页查询历史记录 {@link QueryHistoryTaskResponse}
      */
     PageResult<QueryHistoryTaskResponse> queryHistoryTask(QueryHistoryTaskRequest queryHistoryTaskRequest);
+
+    /**
+     * 查询具体抽取任务的处理结果详情
+     * @param taskId IE任务ID
+     * @return 处理结果详情
+     */
+    Object queryDetail(Long taskId);
+
 }

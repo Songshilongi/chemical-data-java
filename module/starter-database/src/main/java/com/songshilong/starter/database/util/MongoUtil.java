@@ -25,5 +25,10 @@ public class MongoUtil {
     }
 
 
+    public <T> T findByDataId(String dataId, Class<T> clazz) {
+        return mongoOperations.findById(dataId, clazz);
+    }
+
+
 
 }

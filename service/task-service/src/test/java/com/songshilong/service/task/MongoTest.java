@@ -71,5 +71,10 @@ public class MongoTest {
         System.out.println(mongoUtil.getInstance().findOne(query, TextProcessResultEntity.class));
     }
 
+    @Test
+    public void querySmiles() {
+        System.out.println(mongoUtil.findByDataId("8562.741104149973", SmilesProcessResultEntity.class));
+    }
+
 
 }
