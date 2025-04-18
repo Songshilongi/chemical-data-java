@@ -1,8 +1,13 @@
 package com.songshilong.service.task.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.generator.SnowflakeGenerator;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.songshilong.module.starter.common.constant.Constant;
 import com.songshilong.module.starter.common.enums.TaskExceptionEnum;
 import com.songshilong.module.starter.common.enums.TaskStatusEnum;
@@ -11,16 +16,21 @@ import com.songshilong.module.starter.common.exception.BusinessException;
 import com.songshilong.service.task.context.BaseContext;
 import com.songshilong.service.task.dao.entity.*;
 import com.songshilong.service.task.dao.mapper.IETaskRecordMapper;
+import com.songshilong.service.task.dto.request.QueryHistoryTaskRequest;
+import com.songshilong.service.task.dto.response.QueryHistoryTaskResponse;
 import com.songshilong.service.task.service.TaskService;
 import com.songshilong.service.task.util.AliOssUtil;
+import com.songshilong.starter.database.base.PageResult;
 import com.songshilong.starter.database.util.MongoUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -39,6 +49,38 @@ public class TaskServiceImpl implements TaskService {
     private final MongoUtil mongoUtil;
     private final AliOssUtil aliOssUtil;
 
+    @Override
+    public PageResult<QueryHistoryTaskResponse> queryHistoryTask(QueryHistoryTaskRequest queryHistoryTaskRequest) {
+        IPage<IETaskRecordEntity> page = new Page<>(queryHistoryTaskRequest.getPageNumber(), queryHistoryTaskRequest.getPageSize());
+        LambdaQueryWrapper<IETaskRecordEntity> wrapper = Wrappers.lambdaQuery(IETaskRecordEntity.class)
+                .eq(IETaskRecordEntity::getUserId, BaseContext.getContext(Constant.USER_ID))
+                .eq(!Objects.isNull(queryHistoryTaskRequest.getType()),IETaskRecordEntity::getTaskType, queryHistoryTaskRequest.getType())
+                .ge(!Objects.isNull(queryHistoryTaskRequest.getStartTime()),IETaskRecordEntity::getCreateTime, queryHistoryTaskRequest.getStartTime())
+                .le(!Objects.isNull(queryHistoryTaskRequest.getEndTime()),IETaskRecordEntity::getCreateTime, queryHistoryTaskRequest.getEndTime());
+        IPage<IETaskRecordEntity> pageResult = ieTaskRecordMapper.selectPage(page, wrapper);
+        List<IETaskRecordEntity> records = pageResult.getRecords();
+        if (CollectionUtil.isEmpty(records)) {
+            return null;
+        }
+        List<QueryHistoryTaskResponse> responseList = records.stream().map(record -> {
+            QueryHistoryTaskResponse response = new QueryHistoryTaskResponse();
+            response.setTaskId(record.getId());
+            response.setCreateTime(record.getCreateTime());
+            response.setLatestUpdateTime(record.getUpdateTime());
+            response.setTaskCode(record.getTaskType());
+            Optional.ofNullable(TaskStatusEnum.getByCode(record.getStatus())).ifPresent(status -> response.setStatus(status.desc()));
+            Optional.ofNullable(TaskTypeEnum.getByCode(record.getTaskType())).ifPresent(type -> response.setTaskType(type.desc()));
+            return response;
+        }).collect(Collectors.toList());
+
+        return PageResult.<QueryHistoryTaskResponse>builder()
+                .pageNumber(pageResult.getCurrent())
+                .pages(pageResult.getPages())
+                .pageSize(pageResult.getSize())
+                .total(pageResult.getTotal())
+                .result(responseList)
+                .build();
+    }
 
     @Override
     public void createTask(String type, String chemicalText, MultipartFile[] files) {

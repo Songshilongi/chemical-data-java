@@ -14,7 +14,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
-import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
 /**
@@ -26,7 +25,7 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
  * @Version: 1.0
  */
 @AutoConfiguration
-public class MyBatisPlusAutoConfiguration {
+public class DataBaseAutoConfiguration {
 
     @Bean
     public MongoTemplate mongoTemplate(MongoDatabaseFactory mongoDatabaseFactory, MongoMappingContext mongoMappingContext) {

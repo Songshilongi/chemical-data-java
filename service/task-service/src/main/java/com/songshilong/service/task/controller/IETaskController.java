@@ -1,9 +1,13 @@
 package com.songshilong.service.task.controller;
 
 import com.songshilong.module.starter.common.result.Result;
+import com.songshilong.service.task.dto.request.QueryHistoryTaskRequest;
+import com.songshilong.service.task.dto.response.QueryHistoryTaskResponse;
 import com.songshilong.service.task.service.TaskService;
+import com.songshilong.starter.database.base.PageResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,4 +36,14 @@ public class IETaskController {
         taskService.createTask(type, chemicalText, files);
         return Result.success(Boolean.TRUE);
     }
+
+
+    @GetMapping("/history")
+    @ApiOperation(value = "查询历史任务")
+    public Result<PageResult<QueryHistoryTaskResponse>> queryHistoryTask(@Valid QueryHistoryTaskRequest queryHistoryTaskRequest) {
+        PageResult<QueryHistoryTaskResponse> response = taskService.queryHistoryTask(queryHistoryTaskRequest);
+        return Result.success(response);
+    }
+
+
 }

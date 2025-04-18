@@ -10,10 +10,10 @@ package com.songshilong.module.starter.common.enums;
  */
 public enum TaskTypeEnum {
 
-    TEXT("text", "文本抽取"),
-    SMILES("smiles", "识别SMILES"),
-    REACTION("reaction", "识别反应方程式"),
-    REAXYS("reaxys", "Reaxys化学文献ETE抽取");
+    TEXT("text", "化学有机合成文本描述信息抽取"),
+    SMILES("smiles", "分子结构SMILES转换"),
+    REACTION("reaction", "反应方程式结构化信息提取"),
+    REAXYS("reaxys", "Reaxys化学文献ETE结构化信息抽取");
 
 
     private final String code;

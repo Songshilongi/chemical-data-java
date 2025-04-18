@@ -1,5 +1,8 @@
 package com.songshilong.service.task.service;
 
+import com.songshilong.service.task.dto.request.QueryHistoryTaskRequest;
+import com.songshilong.service.task.dto.response.QueryHistoryTaskResponse;
+import com.songshilong.starter.database.base.PageResult;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -19,5 +22,10 @@ public interface TaskService {
      */
     void createTask(String type, String chemicalText, MultipartFile[] files);
 
-
+    /**
+     * 查询某个用户的历史抽取任务创建记录
+     * @param queryHistoryTaskRequest 查询参数 {@link QueryHistoryTaskRequest}
+     * @return 分页查询历史记录 {@link QueryHistoryTaskResponse}
+     */
+    PageResult<QueryHistoryTaskResponse> queryHistoryTask(QueryHistoryTaskRequest queryHistoryTaskRequest);
 }

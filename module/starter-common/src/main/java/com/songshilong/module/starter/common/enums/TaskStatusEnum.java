@@ -9,10 +9,10 @@ package com.songshilong.module.starter.common.enums;
  * @Version: 1.0
  */
 public enum TaskStatusEnum {
-    CREATE_BUT_NOT_START(0, "创建但未开始"),
-    RUNNING(1, "正在运行"),
-    SUCCESS(2, "成功"),
-    FAIL(3, "失败");
+    CREATE_BUT_NOT_START(0, "任务已创建但未开始"),
+    RUNNING(1, "当前任务正在处理中"),
+    SUCCESS(2, "任务处理成功"),
+    FAIL(3, "任务处理失败");
 
     private final Integer code;
     private final String desc;
@@ -28,5 +28,15 @@ public enum TaskStatusEnum {
 
     public String desc() {
         return this.desc;
+    }
+
+
+    public static TaskStatusEnum getByCode(Integer code) {
+        for (TaskStatusEnum taskStatusEnum : TaskStatusEnum.values()) {
+            if (taskStatusEnum.code().equals(code)) {
+                return taskStatusEnum;
+            }
+        }
+        return null;
     }
 }
