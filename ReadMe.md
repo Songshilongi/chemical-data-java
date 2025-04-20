@@ -1,7 +1,8 @@
-# Dev - 持续更新中
-2025.3.30 新增邮件找回密码的功能-先调用接口获取验证码，然后请求另外一个接口更新新密码。  
-2025.3.29 增加Task，引入MongoDB，引入MQ，完善雪花算法，MongoDB和MQ暂时未封装。MongoDB 和MQ通过 - Docker拉取部署 - 框架基本形成。
-2025.05.15 完善任务创建的代码，目前兼容信息抽取模块，优化代码为后续兼容其他化合成的任务创建代码。用户权限管理角色管理TODO
+ # Dev - 持续更新中
+2025.03.30 新增邮件找回密码的功能-先调用接口获取验证码，然后请求另外一个接口更新新密码。  
+2025.03.29 增加Task，引入MongoDB，引入MQ，完善雪花算法，MongoDB和MQ暂时未封装。MongoDB 和MQ通过 - Docker拉取部署 - 框架基本形成。  
+2025.04.15 完善任务创建的代码，目前兼容信息抽取模块，优化代码为后续兼容其他化合成的任务创建代码。用户权限管理角色管理TODO  
+2025.04.20 更新ReadMe，RocketMQ不支持在Windows环境下的本地测试，调研解决方案。
 
 # 化学文献多模态信息抽取平台-Java侧
 该项目为化学文献多模态信息抽取平台-Java侧，包含以下功能:  
@@ -18,6 +19,18 @@
 
 ## 整体框架
 <img src="./source/image/img.png" width="800" height="400" alt="整体框架">
+
+## RocketMQ Topic and tap management
+| Category | Topic           | Tag      | Description             |
+|----------|-----------------|----------|-------------------------|
+| 多模态信息抽取  | task-service_IE | text     | 文本模态反应参数结构化提取           |
+| 多模态信息抽取  | task-service_IE | smiles   | 分子结构图片识别                |
+| 多模态信息抽取  | task-service_IE | reaction | 反应方程式识别                 |
+| 多模态信息抽取  | task-service_IE | reaxys   | ReaxysPDF文献端到端结构化反应数据提取 |
+
+
+
+
 
 
 ## 注意
