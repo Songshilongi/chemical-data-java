@@ -16,6 +16,7 @@
         <module>gateway-service</module>
         <module>user-service</module>
         <module>task-service</module>
+        <module>compound-service</module>
     </modules>
 
 
