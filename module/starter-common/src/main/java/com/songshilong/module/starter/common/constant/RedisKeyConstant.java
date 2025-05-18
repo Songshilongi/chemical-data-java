@@ -23,4 +23,10 @@ public class RedisKeyConstant {
     public static final String USER_RESET_PASSWORD_FLAG_PREFIX = "user:email-reset-password:flag:username:";
 
 
+    /**
+     * 分片上传用于存储已经上传过的分片文件查询前缀
+     */
+    public static final String CHUNK_UPLOAD_PREFIX = "chunk-upload:uploaded:";
+
+
 }

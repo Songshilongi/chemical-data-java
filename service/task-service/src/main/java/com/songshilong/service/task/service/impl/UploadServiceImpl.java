@@ -1,8 +1,13 @@
 package com.songshilong.service.task.service.impl;
 
+import com.songshilong.module.starter.common.constant.Constant;
+import com.songshilong.module.starter.common.constant.RedisKeyConstant;
 import com.songshilong.module.starter.common.enums.ClientExceptionEnum;
 import com.songshilong.module.starter.common.exception.ClientException;
+import com.songshilong.service.task.context.BaseContext;
 import com.songshilong.service.task.service.UploadService;
+import com.songshilong.service.task.util.AliOssUtil;
+import com.songshilong.starter.cache.core.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -10,10 +15,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -26,8 +31,15 @@ import java.nio.charset.StandardCharsets;
 @Service
 @RequiredArgsConstructor
 public class UploadServiceImpl implements UploadService {
+
+
+    private final AliOssUtil aliOssUtil;
+    private final RedisUtil redisUtil;
+
+
     private static final String TEMPLATE_TEXT_RESOURCE_PATH = "template/template_text.xlsx";
     private static final Resource TEXT_TEMPLATE_RESOURCE;
+
     static {
         TEXT_TEMPLATE_RESOURCE = new ClassPathResource(TEMPLATE_TEXT_RESOURCE_PATH);
     }
@@ -49,5 +61,40 @@ public class UploadServiceImpl implements UploadService {
             throw new ClientException(ClientExceptionEnum.TEMPLATE_RESOURCE_LOAD_FAIL);
         }
         return result;
+    }
+
+
+    @Override
+    public Boolean checkFile(String fileKey, String filename) {
+        String value = filename + "|" + fileKey;
+        int location = calculateSlot(value);
+        String key = RedisKeyConstant.CHUNK_UPLOAD_PREFIX + location;
+        return redisUtil.setIsMember(key, value);
+    }
+
+
+    @Override
+    public Boolean uploadChunk(MultipartFile file, String fileKey, Integer chunk, Integer total, String filename) {
+        String ossKey = String.format("chunks/%s/%s/%d.part", BaseContext.getContext(Constant.USERNAME), fileKey, chunk);
+
+
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean mergeChunks(String fileKey, Integer total, String filename) {
+        return Boolean.TRUE;
+    }
+
+    /**
+     * 计算已经上传的文件key的Redis Set分片位置
+     * hash % 16 = hash & (16 - 1)
+     * 当分片数 n 是 2 的幂时，hash % n 等价于 hash & (n-1)。
+     *
+     * @param value 需要被计算的value
+     * @return 位置
+     */
+    private int calculateSlot(String value) {
+        return (value.hashCode() & 0x7FFFFFFF) & 15;
     }
 }

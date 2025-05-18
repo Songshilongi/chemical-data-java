@@ -21,6 +21,9 @@ spring:
       username: mongo
       password: mongo
       database: chemical
+    redis:
+      host: 192.168.1.110
+      port: 6379
 
   config:
     import: nacos:task-service.yaml
