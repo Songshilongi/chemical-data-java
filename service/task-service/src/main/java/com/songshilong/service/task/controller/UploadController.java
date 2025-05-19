@@ -1,6 +1,7 @@
 package com.songshilong.service.task.controller;
 
 import com.songshilong.module.starter.common.result.Result;
+import com.songshilong.service.task.dto.response.MergeChunkResponse;
 import com.songshilong.service.task.service.UploadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,7 +59,7 @@ public class UploadController {
 
     @PostMapping("/merge-chunks")
     @ApiOperation("合并分片文件")
-    public Result<Boolean> mergeChunks(
+    public Result<MergeChunkResponse> mergeChunks(
             @ApiParam(value = "文件唯一标识") @RequestParam("fileKey") String fileKey,
             @ApiParam(value = "总共的分片数量") @RequestParam("total") Integer total,
             @ApiParam(value = "原始文件名    ") @RequestParam("filename") String filename) {

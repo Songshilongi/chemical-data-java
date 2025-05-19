@@ -1,9 +1,15 @@
 package com.songshilong.starter.cache.core;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import com.songshilong.module.starter.common.utils.BeanUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,5 +55,25 @@ public class RedisUtil implements Cache {
     @Override
     public Boolean setIsMember(String key, Object obj) {
         return redisTemplate.opsForSet().isMember(key, obj);
+    }
+
+
+    /**
+     * 获取所有
+     *
+     * @param namespace 命名空间
+     * @return key下所有的键
+     */
+    public List<String> getAllFromNameSpace(String namespace) {
+        if (StrUtil.isBlank(namespace)) {
+            return Collections.emptyList();
+        }
+        Set<String> keys = redisTemplate.keys(namespace + "*");
+        if (CollectionUtil.isEmpty(keys)) {
+            return Collections.emptyList();
+        }
+        List<String> result = new ArrayList<>();
+        keys.forEach(key -> result.add(this.get(key)));
+        return result;
     }
 }

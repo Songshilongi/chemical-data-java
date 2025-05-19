@@ -1,6 +1,7 @@
 package com.songshilong.service.task.service;
 
 import com.songshilong.module.starter.common.result.Result;
+import com.songshilong.service.task.dto.response.MergeChunkResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,7 +44,7 @@ public interface UploadService {
      * @param filename 原始文件名
      * @return True-Success
      */
-    Boolean mergeChunks(String fileKey, Integer total, String filename);
+    MergeChunkResponse mergeChunks(String fileKey, Integer total, String filename);
 
     /**
      * 检查文件是否已经存在（秒传）

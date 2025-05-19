@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -52,6 +53,50 @@ public class AliOssUtil {
                 .credentialsProvider(defaultCredentialProvider)
                 .region(aliYunOssProperty.getRegion())
                 .build();
+    }
+
+    /**
+     * 判断文件是否存在
+     *
+     * @param path 目标完整路径 /xx/yy/resource.xxx
+     * @return true-已经存在
+     */
+    public Boolean fileIsExist(String path) {
+        OSS ossClient = null;
+        Boolean result = Boolean.FALSE;
+        try {
+            ossClient = this.buildClient();
+            result = ossClient.doesObjectExist(aliYunOssProperty.getBucketName(), path);
+        } finally {
+            if (!Objects.isNull(ossClient)) {
+                ossClient.shutdown();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 上传单个文件
+     *
+     * @param file 文件资源
+     * @param path 目标完整路径 /xx/yy/resource.xxx
+     * @return 完整的请求路径
+     */
+    public String uploadFile(MultipartFile file, String path) {
+        OSS ossClient = null;
+        String url = null;
+        try {
+            ossClient = this.buildClient();
+            ossClient.putObject(aliYunOssProperty.getBucketName(), path, file.getInputStream());
+            url = HTTPS + aliYunOssProperty.getBucketName() + "." + aliYunOssProperty.getEndpoint() + "/" + path;
+        } catch (OSSException | ClientException | IOException e) {
+            throw new RuntimeException("文件上传失败");
+        } finally {
+            if (!Objects.isNull(ossClient)) {
+                ossClient.shutdown();
+            }
+        }
+        return url;
     }
 
     /**
