@@ -27,6 +27,10 @@ public class ReactionImageParam {
      */
     private List<String> reactant;
     /**
+     * 底物-OSS地址
+     */
+    private List<String> reactantOssList;
+    /**
      * 底物-名称
      */
     @Field("reactant_name")
@@ -46,6 +50,10 @@ public class ReactionImageParam {
      * 产物-SMILES
      */
     private List<String> product;
+    /**
+     * 产物-OSS地址
+     */
+    private List<String> productOssList;
     /**
      * 产物-名称
      */
