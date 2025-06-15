@@ -30,6 +30,11 @@ public class ReaxysReactionParam {
      */
     private List<String> reactant;
     /**
+     * 底物-OSS地址
+     */
+    private List<String> reactantOssList;
+
+    /**
      * 底物-名称
      */
     @Field("reactant_name")
@@ -41,6 +46,10 @@ public class ReaxysReactionParam {
     private List<String> product;
 
     /**
+     * 产物-OSS地址
+     */
+    private List<String> productOssList;
+    /**
      * 产物-名称
      */
     private List<String> productNameList;
@@ -50,8 +59,6 @@ public class ReaxysReactionParam {
      */
     @Field("table_condition_list")
     private List<TableComponent> tableComponentList;
-
-
 
 
 }
