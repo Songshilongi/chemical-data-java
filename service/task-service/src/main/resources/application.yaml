@@ -10,33 +10,37 @@ spring:
     active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.110:3306/chemical_data_0?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:3306/chemical_data_0?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
     username: root
-    password: root
+    password: hby83889237
   data:
-    mongodb:
-      authentication-database: admin
-      host: 192.168.1.110
-      port: 27017
-      username: mongo
-      password: mongo
-      database: chemical
+#    mongodb:
+#      authentication-database: admin
+#      host: 192.168.1.110
+#      port: 27017
+#      username: mongo
+#      password: mongo
+#      database: chemical
     redis:
-      host: 192.168.1.110
+      host: 127.0.0.1
       port: 6379
-
-  config:
-    import: nacos:task-service.yaml
   cloud:
     nacos:
-      discovery:
-        server-addr: 192.168.1.110:8848
-        namespace: ddc57837-c29e-4e51-846d-1feb554be9d0
       config:
-        server-addr: 192.168.1.110:8848
-        namespace: ddc57837-c29e-4e51-846d-1feb554be9d0
-        file-extension: yaml
-        group: DEFAULT_GROUP
+        import-check:
+          enabled: false  # 禁用 Nacos 配置检查
+
+#    import: nacos:task-service.yaml
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 192.168.1.110:8848
+#        namespace: ddc57837-c29e-4e51-846d-1feb554be9d0
+#      config:
+#        server-addr: 192.168.1.110:8848
+#        namespace: ddc57837-c29e-4e51-846d-1feb554be9d0
+#        file-extension: yaml
+#        group: DEFAULT_GROUP
 
 
 mybatis-plus:
@@ -58,19 +62,19 @@ chemical:
 
 
 
-rocketmq:
-  name-server: 192.168.1.110:9876
-  producer:
-    group: task-service-producer
-    send-message-timeout: 5000
-    retry-times-when-send-failed: 3
-    retry-times-when-send-async-failed: 3
-    # 4MB = 4 * 1024 * 1024 Byte
-    max-message-size: 4096
-    # 压缩消息-默认4KB
-    compress-message-body-threshold: 4096
-    retry-next-server: false
-  consumer:
-    group: task-service-consumer
-    # 单次拉取消息的最大值
-    pull-batch-size: 10
+#rocketmq:
+#  name-server: 192.168.1.110:9876
+#  producer:
+#    group: task-service-producer
+#    send-message-timeout: 5000
+#    retry-times-when-send-failed: 3
+#    retry-times-when-send-async-failed: 3
+#    # 4MB = 4 * 1024 * 1024 Byte
+#    max-message-size: 4096
+#    # 压缩消息-默认4KB
+#    compress-message-body-threshold: 4096
+#    retry-next-server: false
+#  consumer:
+#    group: task-service-consumer
+#    # 单次拉取消息的最大值
+#    pull-batch-size: 10

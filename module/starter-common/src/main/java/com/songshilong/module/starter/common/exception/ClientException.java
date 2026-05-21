@@ -41,4 +41,7 @@ public class ClientException extends AbstractException {
         this(handler.errorCode(), handler.errorMsg());
     }
 
+    public ClientException(String message) {
+        this(message, null);
+    }
 }

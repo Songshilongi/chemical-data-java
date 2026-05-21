@@ -17,6 +17,7 @@
         <module>user-service</module>
         <module>task-service</module>
         <module>compound-service</module>
+        <module>classify-service</module>
     </modules>
 
 

@@ -1,0 +1,73 @@
+server:
+  port: 9600
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB   # 必须 <= Nginx 的 client_max_body_size
+      max-request-size: 100MB # 必须 <= Nginx 的 client_max_body_size
+      file-size-threshold: 2MB
+  application:
+    name: classify-service
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/chemical?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: hby83889237
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+#      password:
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+springdoc:
+  default-flat-param-object: true
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.songshilong.service
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+  spring:
+    servlet:
+      multipart:
+        enabled=true
+        max-file-size=10MB
+        max-request-size=10MB
+
+rocketmq:
+  name-server: common-rocketmq-dev.magestack.cn:9876
+  producer:
+    group: chemical-data-java_classify-service_hpk-service_batch-reaction-producer-group
+    send-message-timeout: 3000
+    retry-times-when-send-failed: 2
+    retry-times-when-send-async-failed: 2
+
+python-service:
+  # 这里填写你Python服务实际运行的地址和端口
+  url: http://localhost:8000
+
+
+aliyun:
+  oss:
+    endpoint: ${OSS_ENDPOINT}
+    access-key-id: ${OSS_ACCESS_KEY_ID}
+    access-key-secret: ${OSS_ACCESS_KEY_SECRET}
+    bucket-name: ${OSS_BUCKET_NAME}
+    url-expire-seconds: ${OSS_URL_EXPIRE:3600}

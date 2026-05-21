@@ -1,20 +1,24 @@
 package com.songshilong.starter.database.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.songshilong.starter.database.handler.MyMetaObjectHandler;
-import com.songshilong.starter.database.util.MongoUtil;
+//import com.songshilong.starter.database.util.MongoUtil;
+import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.MongoDatabaseFactory;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
-import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
-import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
-import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+
+import java.util.Date;
+//import org.springframework.data.mongodb.MongoDatabaseFactory;
+//import org.springframework.data.mongodb.core.MongoOperations;
+//import org.springframework.data.mongodb.core.MongoTemplate;
+//import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+//import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+//import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+//import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
 /**
  * @BelongsProject: chemical-data-java
@@ -27,23 +31,23 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 @AutoConfiguration
 public class DataBaseAutoConfiguration {
 
-    @Bean
-    public MongoTemplate mongoTemplate(MongoDatabaseFactory mongoDatabaseFactory, MongoMappingContext mongoMappingContext) {
-        DefaultDbRefResolver defaultDbRefResolver = new DefaultDbRefResolver(mongoDatabaseFactory);
-        MappingMongoConverter mappingMongoConverter = new MappingMongoConverter(defaultDbRefResolver, mongoMappingContext);
-        mappingMongoConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
-        return new MongoTemplate(mongoDatabaseFactory, mappingMongoConverter);
-    }
-
-
-    /**
-     * MongoDb 封装类
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public MongoUtil mongoUtil(MongoOperations mongoOperations) {
-        return new MongoUtil(mongoOperations );
-    }
+//    @Bean
+//    public MongoTemplate mongoTemplate(MongoDatabaseFactory mongoDatabaseFactory, MongoMappingContext mongoMappingContext) {
+//        DefaultDbRefResolver defaultDbRefResolver = new DefaultDbRefResolver(mongoDatabaseFactory);
+//        MappingMongoConverter mappingMongoConverter = new MappingMongoConverter(defaultDbRefResolver, mongoMappingContext);
+//        mappingMongoConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
+//        return new MongoTemplate(mongoDatabaseFactory, mappingMongoConverter);
+//    }
+//
+//
+//    /**
+//     * MongoDb 封装类
+//     */
+//    @Bean
+//    @ConditionalOnMissingBean
+//    public MongoUtil mongoUtil(MongoOperations mongoOperations) {
+//        return new MongoUtil(mongoOperations );
+//    }
 
 
     /**
@@ -69,5 +73,15 @@ public class DataBaseAutoConfiguration {
         return new MyMetaObjectHandler();
     }
 
+    static class MyMetaObjectHandler implements MetaObjectHandler {
 
+        @Override
+        public void insertFill(MetaObject metaObject) {
+            strictInsertFill(metaObject, "createTime", Date::new, Date.class);
+        }
+        @Override
+        public void updateFill(MetaObject metaObject) {
+            strictInsertFill(metaObject, "updateTime", Date::new, Date.class);
+        }
+    }
 }

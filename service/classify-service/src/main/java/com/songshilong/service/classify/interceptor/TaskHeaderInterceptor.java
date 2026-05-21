@@ -1,35 +1,35 @@
-package com.songshilong.service.task.interceptor;
+package com.songshilong.service.classify.interceptor;
 
 import com.songshilong.module.starter.common.constant.Constant;
-import com.songshilong.service.task.context.BaseContext;
+import com.songshilong.service.classify.context.BaseContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-/**
- * @BelongsProject: chemical-data-java
- * @BelongsPackage: com.songshilong.service.task.interceptor
- * @Author: Ice, Song
- * @CreateTime: 2025-04-03  14:08
- * @Description: TaskHeaderInterceptor
- * @Version: 1.0
- */
+@Slf4j
 @Component
 public class TaskHeaderInterceptor implements HandlerInterceptor {
 
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("【拦截器执行】USER_ID = " + request.getHeader(Constant.USER_ID));
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
-        BaseContext.setContext(Constant.USER_ID, request.getHeader(Constant.USER_ID));
-        BaseContext.setContext(Constant.USERNAME, request.getHeader(Constant.USERNAME));
-        BaseContext.setContext(Constant.EMAIL, request.getHeader(Constant.EMAIL));
-        BaseContext.setContext(Constant.PHONE, request.getHeader(Constant.PHONE));
+        String userId = request.getHeader(Constant.USER_ID);
+        String username = request.getHeader(Constant.USERNAME);
+        String email = request.getHeader(Constant.EMAIL);
+        String phone = request.getHeader(Constant.PHONE);
+
+        log.info("【拦截器】请求 URI = {}, USER_ID = {}, USERNAME = {}",
+                request.getRequestURI(), userId, username);
+
+        BaseContext.setContext(Constant.USER_ID, userId);
+        BaseContext.setContext(Constant.USERNAME, username);
+        BaseContext.setContext(Constant.EMAIL, email);
+        BaseContext.setContext(Constant.PHONE, phone);
         return true;
     }
 
